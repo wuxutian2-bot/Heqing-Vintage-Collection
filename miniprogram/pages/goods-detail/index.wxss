@@ -1,0 +1,91 @@
+.detail-page {
+  padding-bottom: 150rpx;
+}
+
+.image-swiper,
+.detail-image {
+  background: #e5ece9;
+  border-radius: 8rpx;
+  height: 560rpx;
+  width: 100%;
+}
+
+.detail-image.single {
+  display: block;
+}
+
+.info-card,
+.block-card {
+  margin-top: 22rpx;
+  padding: 26rpx;
+}
+
+.price-row,
+.meta-row,
+.contact-row,
+.bottom-actions {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.detail-price {
+  color: #d97706;
+  font-size: 46rpx;
+  font-weight: 800;
+}
+
+.status {
+  background: #eef5f2;
+  border-radius: 6rpx;
+  color: #1f7a5a;
+  font-size: 24rpx;
+  padding: 8rpx 14rpx;
+}
+
+.detail-title {
+  font-size: 38rpx;
+  font-weight: 800;
+  line-height: 1.35;
+  margin-top: 18rpx;
+}
+
+.meta-row {
+  color: #7b8794;
+  font-size: 24rpx;
+  margin-top: 16rpx;
+}
+
+.block-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  margin-bottom: 16rpx;
+}
+
+.detail-desc {
+  color: #3e4c59;
+  line-height: 1.65;
+  white-space: pre-wrap;
+}
+
+.copy-btn {
+  background: #eef5f2;
+  border-radius: 8rpx;
+  color: #1f7a5a;
+  font-size: 24rpx;
+  padding: 14rpx 22rpx;
+}
+
+.bottom-actions {
+  background: rgba(255, 255, 255, 0.96);
+  bottom: 0;
+  gap: 18rpx;
+  left: 0;
+  padding: 18rpx 28rpx calc(18rpx + env(safe-area-inset-bottom));
+  position: fixed;
+  right: 0;
+}
+
+.bottom-actions button {
+  flex: 1;
+}

@@ -1,0 +1,42 @@
+<view class="page publish-page">
+  <view class="hero">
+    <view class="hero-title">让闲置重新流动</view>
+    <view class="hero-subtitle">图片清楚、价格真实，会更快被同学看到</view>
+  </view>
+
+  <view class="field">
+    <text class="field-label">商品标题</text>
+    <input class="input" value="{{title}}" maxlength="30" placeholder="例如：九成新 Kindle Paperwhite" data-field="title" bindinput="onInput" />
+  </view>
+  <view class="field">
+    <text class="field-label">价格</text>
+    <input class="input" value="{{price}}" type="digit" placeholder="请输入数字" data-field="price" bindinput="onInput" />
+  </view>
+  <view class="field">
+    <text class="field-label">分类</text>
+    <picker range="{{categories}}" value="{{categoryIndex}}" bindchange="onCategoryChange">
+      <view class="picker-value">{{categories[categoryIndex]}}</view>
+    </picker>
+  </view>
+  <view class="field">
+    <text class="field-label">商品描述</text>
+    <textarea class="textarea" value="{{desc}}" maxlength="500" placeholder="成色、购买时间、配件、交易地点等" data-field="desc" bindinput="onInput"></textarea>
+  </view>
+  <view class="field">
+    <text class="field-label">联系方式</text>
+    <input class="input" value="{{contact}}" maxlength="40" placeholder="微信号或手机号" data-field="contact" bindinput="onInput" />
+  </view>
+
+  <view class="field">
+    <text class="field-label">商品图片</text>
+    <view class="image-grid">
+      <view wx:for="{{images}}" wx:key="*this" class="image-cell">
+        <image class="upload-image" mode="aspectFill" src="{{item}}"></image>
+        <view class="remove-image" data-index="{{index}}" bindtap="removeImage">×</view>
+      </view>
+      <view wx:if="{{images.length < 9}}" class="add-image" bindtap="chooseImages">+</view>
+    </view>
+  </view>
+
+  <button class="primary-btn submit-btn" loading="{{submitting}}" bindtap="submit">发布商品</button>
+</view>

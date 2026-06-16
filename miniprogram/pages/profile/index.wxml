@@ -1,0 +1,63 @@
+<view class="page profile-page">
+  <view wx:if="{{user}}" class="profile-header card">
+    <image class="avatar" src="{{user.avatarUrl || '/images/avatar.png'}}"></image>
+    <view class="profile-main">
+      <view class="nickname">{{user.nickName || '微信用户'}}</view>
+      <view class="muted">管理发布、帖子和收藏</view>
+    </view>
+    <button class="logout-btn" bindtap="logout">退出</button>
+  </view>
+
+  <view wx:else class="login-card card">
+    <view class="login-title">还未登录</view>
+    <view class="muted">登录后可以查看你的发布和收藏</view>
+    <button class="primary-btn" bindtap="goLogin">去登录</button>
+  </view>
+
+  <view wx:if="{{user}}">
+    <view class="tab-row">
+      <view wx:for="{{tabs}}" wx:key="key" class="tab-item {{activeTab === item.key ? 'active' : ''}}" data-key="{{item.key}}" bindtap="switchTab">{{item.text}}</view>
+    </view>
+
+    <view wx:if="{{activeTab === 'goods'}}">
+      <view wx:if="{{goods.length}}" class="item-list">
+        <view wx:for="{{goods}}" wx:key="_id" class="mine-card card">
+          <image class="mine-cover" mode="aspectFill" src="{{item.cover}}" data-id="{{item._id}}" bindtap="goGoodsDetail"></image>
+          <view class="mine-main">
+            <view class="mine-title" data-id="{{item._id}}" bindtap="goGoodsDetail">{{item.title}}</view>
+            <view class="mine-meta">￥{{item.priceText}} · {{item.statusText}}</view>
+            <view class="mine-actions">
+              <button class="mini-btn" data-id="{{item._id}}" bindtap="markSold">标记已售</button>
+              <button class="mini-btn danger" data-id="{{item._id}}" bindtap="removeGoods">下架</button>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view wx:else class="empty">还没有发布商品</view>
+    </view>
+
+    <view wx:if="{{activeTab === 'posts'}}">
+      <view wx:if="{{posts.length}}" class="item-list">
+        <view wx:for="{{posts}}" wx:key="_id" class="post-card card" data-id="{{item._id}}" bindtap="goPostDetail">
+          <view class="mine-title">{{item.title}}</view>
+          <view class="post-content">{{item.content}}</view>
+          <view class="mine-meta">{{item.createdText}} · {{item.commentCount || 0}} 评论</view>
+        </view>
+      </view>
+      <view wx:else class="empty">还没有发布帖子</view>
+    </view>
+
+    <view wx:if="{{activeTab === 'favorites'}}">
+      <view wx:if="{{favorites.length}}" class="item-list">
+        <view wx:for="{{favorites}}" wx:key="_id" class="mine-card card" data-id="{{item._id}}" bindtap="goGoodsDetail">
+          <image class="mine-cover" mode="aspectFill" src="{{item.cover}}"></image>
+          <view class="mine-main">
+            <view class="mine-title">{{item.title}}</view>
+            <view class="mine-meta">￥{{item.priceText}} · {{item.category}}</view>
+          </view>
+        </view>
+      </view>
+      <view wx:else class="empty">还没有收藏商品</view>
+    </view>
+  </view>
+</view>

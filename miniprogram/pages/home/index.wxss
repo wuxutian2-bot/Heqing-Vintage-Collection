@@ -1,0 +1,135 @@
+.market-hero {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.hero-action {
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 8rpx;
+  color: #1f7a5a;
+  font-weight: 700;
+  height: 68rpx;
+  padding: 0 30rpx;
+}
+
+.search-row {
+  align-items: center;
+  display: flex;
+  gap: 16rpx;
+  padding: 16rpx 18rpx;
+}
+
+.search-input {
+  background: #f4f7f6;
+  border-radius: 8rpx;
+  flex: 1;
+  height: 72rpx;
+  padding: 0 22rpx;
+}
+
+.search-btn {
+  background: #1f7a5a;
+  border-radius: 8rpx;
+  color: #fff;
+  font-size: 26rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  width: 112rpx;
+}
+
+.category-scroll {
+  margin: 24rpx -28rpx 20rpx;
+  white-space: nowrap;
+}
+
+.category-row {
+  display: flex;
+  gap: 16rpx;
+  padding: 0 28rpx;
+}
+
+.category-pill {
+  background: #fff;
+  border: 1rpx solid rgba(31, 41, 51, 0.06);
+  border-radius: 8rpx;
+  color: #52606d;
+  flex: 0 0 auto;
+  font-size: 26rpx;
+  padding: 16rpx 24rpx;
+}
+
+.category-pill.active {
+  background: #1f7a5a;
+  color: #fff;
+}
+
+.goods-grid {
+  display: grid;
+  gap: 22rpx;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.goods-card {
+  overflow: hidden;
+}
+
+.goods-cover {
+  background: #e5ece9;
+  height: 230rpx;
+  width: 100%;
+}
+
+.goods-body {
+  padding: 18rpx;
+}
+
+.goods-title {
+  font-size: 29rpx;
+  font-weight: 700;
+  line-height: 1.35;
+  min-height: 78rpx;
+}
+
+.goods-meta,
+.goods-foot {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.goods-price {
+  color: #d97706;
+  font-size: 32rpx;
+  font-weight: 800;
+}
+
+.goods-category {
+  background: #eef5f2;
+  border-radius: 6rpx;
+  color: #1f7a5a;
+  font-size: 22rpx;
+  padding: 6rpx 10rpx;
+}
+
+.goods-desc {
+  color: #52606d;
+  font-size: 24rpx;
+  height: 66rpx;
+  line-height: 1.35;
+  margin-top: 8rpx;
+  overflow: hidden;
+}
+
+.goods-foot {
+  color: #9aa5b1;
+  font-size: 21rpx;
+  margin-top: 14rpx;
+}
+
+.list-end {
+  color: #9aa5b1;
+  font-size: 24rpx;
+  padding: 32rpx 0;
+  text-align: center;
+}

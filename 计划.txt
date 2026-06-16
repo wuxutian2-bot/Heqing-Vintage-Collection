@@ -1,0 +1,289 @@
+一、建议功能结构
+
+把小程序做成 4 个 Tab：
+
+首页 / 二手市场
+商品列表
+分类筛选
+搜索
+商品详情
+发布
+发布二手商品
+上传图片
+填标题、价格、描述、分类、联系方式
+社区 / 交易论坛
+帖子列表
+发帖
+评论
+点赞 / 收藏
+我的
+微信登录
+我的发布
+我的帖子
+我的收藏
+个人信息
+二、数据库设计
+
+在云开发数据库建这些集合：
+
+users          用户表
+goods          商品表
+posts          社区帖子表
+comments       评论表
+favorites      收藏表
+messages       留言/私信表，可后期做
+users
+{
+  _openid: "用户openid",
+  nickName: "昵称",
+  avatarUrl: "头像",
+  phone: "",
+  createdAt: Date,
+  updatedAt: Date
+}
+goods
+{
+  _openid: "发布者openid",
+  title: "商品标题",
+  price: 99,
+  desc: "商品描述",
+  category: "数码",
+  images: ["cloud://xxx"],
+  status: "on_sale", // on_sale, sold, removed
+  contact: "微信号或手机号",
+  viewCount: 0,
+  createdAt: Date,
+  updatedAt: Date
+}
+posts
+{
+  _openid: "发帖人openid",
+  title: "帖子标题",
+  content: "帖子内容",
+  images: [],
+  likeCount: 0,
+  commentCount: 0,
+  createdAt: Date
+}
+comments
+{
+  _openid: "评论人openid",
+  targetType: "goods 或 post",
+  targetId: "商品或帖子id",
+  content: "评论内容",
+  createdAt: Date
+}
+三、页面目录建议
+
+让 Codex 按这个结构改：
+
+miniprogram/pages/
+  home/               二手商品首页
+  goods-detail/       商品详情
+  publish-goods/      发布商品
+  forum/              社区帖子列表
+  post-detail/        帖子详情
+  publish-post/       发布帖子
+  profile/            我的
+  login/              登录
+
+修改 app.json：
+
+{
+  "pages": [
+    "pages/home/index",
+    "pages/goods-detail/index",
+    "pages/publish-goods/index",
+    "pages/forum/index",
+    "pages/post-detail/index",
+    "pages/publish-post/index",
+    "pages/profile/index",
+    "pages/login/index"
+  ],
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "市场"
+      },
+      {
+        "pagePath": "pages/publish-goods/index",
+        "text": "发布"
+      },
+      {
+        "pagePath": "pages/forum/index",
+        "text": "社区"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的"
+      }
+    ]
+  }
+}
+四、登录怎么做
+
+推荐流程：
+
+小程序端点击登录
+调用云函数 login
+云函数获取 OpenID
+查询 users 集合
+没有用户就创建
+返回用户信息
+
+你现在项目里已经有 getOpenId 云函数逻辑，可以保留并扩展。
+
+云函数示例：
+
+const cloud = require("wx-server-sdk")
+cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
+
+const db = cloud.database()
+
+exports.main = async (event) => {
+  const wxContext = cloud.getWXContext()
+  const openid = wxContext.OPENID
+
+  const userRes = await db.collection("users").where({
+    _openid: openid
+  }).get()
+
+  if (userRes.data.length === 0) {
+    const user = {
+      _openid: openid,
+      nickName: event.nickName || "微信用户",
+      avatarUrl: event.avatarUrl || "",
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }
+
+    const addRes = await db.collection("users").add({
+      data: user
+    })
+
+    return {
+      userId: addRes._id,
+      ...user
+    }
+  }
+
+  return userRes.data[0]
+}
+五、发布商品流程
+
+前端：
+
+wx.chooseMedia({
+  count: 9,
+  mediaType: ["image"],
+  success: async res => {
+    // 上传图片到云存储
+  }
+})
+
+上传图片：
+
+const uploadRes = await wx.cloud.uploadFile({
+  cloudPath: `goods/${Date.now()}-${Math.random()}.jpg`,
+  filePath: tempFilePath
+})
+
+保存商品：
+
+await wx.cloud.callFunction({
+  name: "goods",
+  data: {
+    type: "add",
+    title,
+    price,
+    desc,
+    category,
+    images,
+    contact
+  }
+})
+六、社区论坛流程
+
+社区和商品逻辑很像：
+
+发帖
+await wx.cloud.callFunction({
+  name: "posts",
+  data: {
+    type: "add",
+    title,
+    content,
+    images
+  }
+})
+获取帖子列表
+await wx.cloud.callFunction({
+  name: "posts",
+  data: {
+    type: "list",
+    page: 1,
+    pageSize: 10
+  }
+})
+评论
+await wx.cloud.callFunction({
+  name: "comments",
+  data: {
+    type: "add",
+    targetType: "post",
+    targetId,
+    content
+  }
+})
+七、给 Codex 的开发指令
+
+你可以直接把下面这段发给 Codex：
+
+请基于当前微信小程序云开发项目进行重构，目标是开发一个二手交易 + 社区论坛小程序。
+
+技术要求：
+1. 使用微信小程序原生框架：WXML、WXSS、JS。
+2. 使用微信云开发作为后端。
+3. 使用云数据库存储 users、goods、posts、comments、favorites。
+4. 使用云存储保存商品图片和帖子图片。
+5. 使用云函数处理登录、商品发布、商品列表、商品详情、帖子发布、帖子列表、评论、收藏等逻辑。
+6. 不要直接在前端写敏感数据库操作，涉及新增、删除、修改的操作尽量通过云函数完成。
+
+页面要求：
+1. pages/home/index：二手商品列表页。
+2. pages/goods-detail/index：商品详情页。
+3. pages/publish-goods/index：发布商品页。
+4. pages/forum/index：社区帖子列表页。
+5. pages/post-detail/index：帖子详情页。
+6. pages/publish-post/index：发布帖子页。
+7. pages/profile/index：个人中心页。
+8. pages/login/index：登录页。
+
+功能要求：
+1. 用户可以微信登录。
+2. 登录后可以发布二手商品。
+3. 商品包含标题、价格、描述、分类、图片、联系方式。
+4. 首页可以展示商品列表。
+5. 商品详情页可以查看图片、价格、描述和联系方式。
+6. 用户可以发布社区帖子。
+7. 社区帖子可以评论。
+8. 个人中心可以查看我的商品和我的帖子。
+9. 添加基础表单校验，例如标题不能为空、价格必须是数字。
+10. 添加基础加载状态和错误提示。
+
+请先完成目录结构、app.json、基础样式和主要页面骨架，然后逐步实现云函数和数据库操作。
+八、开发顺序
+
+建议按这个顺序做：
+
+第 1 步：配置云开发环境 ID
+第 2 步：重构 app.json 和 TabBar
+第 3 步：做登录页和 users 集合
+第 4 步：做商品发布页
+第 5 步：做商品列表页
+第 6 步：做商品详情页
+第 7 步：做社区帖子列表
+第 8 步：做发帖页
+第 9 步：做帖子详情和评论
+第 10 步：做个人中心

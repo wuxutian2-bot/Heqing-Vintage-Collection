@@ -1,0 +1,29 @@
+<view class="page post-detail-page">
+  <view wx:if="{{post}}">
+    <view class="card post-card">
+      <view class="post-title">{{post.title}}</view>
+      <view class="post-meta">{{post.createdText}} · {{post.likeCount || 0}} 赞 · {{post.commentCount || 0}} 评论</view>
+      <view class="post-content">{{post.content}}</view>
+      <view wx:if="{{post.images.length}}" class="image-grid">
+        <image wx:for="{{post.images}}" wx:key="*this" class="post-image" mode="aspectFill" src="{{item}}" data-src="{{item}}" bindtap="previewImage"></image>
+      </view>
+      <button class="ghost-btn like-btn" bindtap="likePost">赞一下</button>
+    </view>
+
+    <view class="section-title">评论</view>
+    <view wx:if="{{comments.length}}" class="comment-list">
+      <view wx:for="{{comments}}" wx:key="_id" class="comment-card card">
+        <view class="comment-content">{{item.content}}</view>
+        <view class="comment-meta">{{item.nickName || '同学'}} · {{item.createdText}}</view>
+      </view>
+    </view>
+    <view wx:else class="empty">还没有评论</view>
+
+    <view class="comment-box">
+      <input class="comment-input" value="{{commentText}}" placeholder="写一条评论" bindinput="onCommentInput" />
+      <button class="comment-btn" loading="{{submitting}}" bindtap="submitComment">发送</button>
+    </view>
+  </view>
+  <view wx:elif="{{loading}}" class="empty">加载中...</view>
+  <view wx:else class="empty">帖子不存在</view>
+</view>

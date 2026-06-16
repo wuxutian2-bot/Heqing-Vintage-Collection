@@ -1,0 +1,42 @@
+<view class="page home-page">
+  <view class="hero market-hero">
+    <view>
+      <view class="hero-title">今天想淘点什么？</view>
+      <view class="hero-subtitle">发布闲置、找教材、逛同校好物</view>
+    </view>
+    <button class="hero-action" bindtap="goPublish">发布</button>
+  </view>
+
+  <view class="search-row card">
+    <input class="search-input" value="{{keyword}}" confirm-type="search" placeholder="搜索商品、教材、数码设备" bindinput="onKeywordInput" bindconfirm="onSearch" />
+    <button class="search-btn" bindtap="onSearch">搜索</button>
+  </view>
+
+  <scroll-view class="category-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="category-row">
+      <view wx:for="{{categories}}" wx:key="*this" class="category-pill {{activeCategory === item ? 'active' : ''}}" data-category="{{item}}" bindtap="onCategoryTap">{{item}}</view>
+    </view>
+  </scroll-view>
+
+  <view class="goods-grid" wx:if="{{goodsList.length}}">
+    <view wx:for="{{goodsList}}" wx:key="_id" class="goods-card card" data-id="{{item._id}}" bindtap="goDetail">
+      <image class="goods-cover" mode="aspectFill" src="{{item.cover}}"></image>
+      <view class="goods-body">
+        <view class="goods-title">{{item.title}}</view>
+        <view class="goods-meta">
+          <text class="goods-price">￥{{item.priceText}}</text>
+          <text class="goods-category">{{item.category}}</text>
+        </view>
+        <view class="goods-desc">{{item.desc}}</view>
+        <view class="goods-foot">
+          <text>{{item.createdText}}</text>
+          <text>{{item.viewCount || 0}} 次浏览</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{!loading && !goodsList.length}}" class="empty">还没有商品，先发布一件闲置吧</view>
+  <view wx:if="{{loading}}" class="empty">加载中...</view>
+  <view wx:if="{{!hasMore && goodsList.length}}" class="list-end">已经到底啦</view>
+</view>

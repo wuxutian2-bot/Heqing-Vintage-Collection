@@ -1,0 +1,87 @@
+.post-detail-page {
+  padding-bottom: 130rpx;
+}
+
+.post-card,
+.comment-card {
+  padding: 26rpx;
+}
+
+.post-title {
+  font-size: 38rpx;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.post-meta,
+.comment-meta {
+  color: #9aa5b1;
+  font-size: 24rpx;
+  margin-top: 14rpx;
+}
+
+.post-content {
+  color: #3e4c59;
+  line-height: 1.7;
+  margin-top: 24rpx;
+  white-space: pre-wrap;
+}
+
+.image-grid {
+  display: grid;
+  gap: 12rpx;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 22rpx;
+}
+
+.post-image {
+  background: #e5ece9;
+  border-radius: 8rpx;
+  height: 190rpx;
+  width: 100%;
+}
+
+.like-btn {
+  height: 76rpx;
+  margin-top: 24rpx;
+}
+
+.comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.comment-content {
+  line-height: 1.55;
+}
+
+.comment-box {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.96);
+  bottom: 0;
+  display: flex;
+  gap: 14rpx;
+  left: 0;
+  padding: 18rpx 28rpx calc(18rpx + env(safe-area-inset-bottom));
+  position: fixed;
+  right: 0;
+}
+
+.comment-input {
+  background: #f4f7f6;
+  border-radius: 8rpx;
+  flex: 1;
+  height: 76rpx;
+  padding: 0 22rpx;
+}
+
+.comment-btn {
+  background: #1f7a5a;
+  border-radius: 8rpx;
+  color: #fff;
+  font-size: 26rpx;
+  height: 76rpx;
+  line-height: 76rpx;
+  width: 116rpx;
+}

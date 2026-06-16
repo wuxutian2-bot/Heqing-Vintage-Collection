@@ -1,0 +1,36 @@
+.login-page {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.login-panel {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding: 56rpx 36rpx;
+  width: 100%;
+}
+
+.login-avatar {
+  border-radius: 50%;
+  height: 142rpx;
+  width: 142rpx;
+}
+
+.login-title {
+  font-size: 38rpx;
+  font-weight: 800;
+  margin-top: 28rpx;
+}
+
+.login-desc {
+  color: #7b8794;
+  line-height: 1.5;
+  margin: 18rpx 0 42rpx;
+  text-align: center;
+}
+
+.login-btn {
+  width: 100%;
+}

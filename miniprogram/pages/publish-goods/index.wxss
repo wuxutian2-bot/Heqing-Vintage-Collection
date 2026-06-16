@@ -1,0 +1,48 @@
+.image-grid {
+  display: grid;
+  gap: 14rpx;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.image-cell,
+.add-image,
+.upload-image {
+  border-radius: 8rpx;
+  height: 190rpx;
+  width: 100%;
+}
+
+.image-cell {
+  position: relative;
+}
+
+.upload-image {
+  background: #e5ece9;
+}
+
+.add-image {
+  align-items: center;
+  background: #eef5f2;
+  color: #1f7a5a;
+  display: flex;
+  font-size: 62rpx;
+  justify-content: center;
+}
+
+.remove-image {
+  align-items: center;
+  background: rgba(31, 41, 51, 0.72);
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  height: 42rpx;
+  justify-content: center;
+  position: absolute;
+  right: 8rpx;
+  top: 8rpx;
+  width: 42rpx;
+}
+
+.submit-btn {
+  margin-top: 28rpx;
+}

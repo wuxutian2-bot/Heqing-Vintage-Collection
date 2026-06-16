@@ -1,0 +1,127 @@
+.profile-header,
+.login-card {
+  align-items: center;
+  display: flex;
+  gap: 20rpx;
+  padding: 28rpx;
+}
+
+.avatar {
+  border-radius: 50%;
+  height: 112rpx;
+  width: 112rpx;
+}
+
+.profile-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.nickname {
+  font-size: 34rpx;
+  font-weight: 800;
+  margin-bottom: 8rpx;
+}
+
+.logout-btn,
+.mini-btn {
+  background: #eef5f2;
+  border-radius: 8rpx;
+  color: #1f7a5a;
+  font-size: 24rpx;
+  padding: 14rpx 18rpx;
+}
+
+.login-card {
+  align-items: stretch;
+  flex-direction: column;
+}
+
+.login-title {
+  font-size: 34rpx;
+  font-weight: 800;
+}
+
+.tab-row {
+  background: #fff;
+  border-radius: 8rpx;
+  display: grid;
+  gap: 8rpx;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 24rpx 0;
+  padding: 8rpx;
+}
+
+.tab-item {
+  border-radius: 7rpx;
+  color: #52606d;
+  font-size: 25rpx;
+  padding: 18rpx 8rpx;
+  text-align: center;
+}
+
+.tab-item.active {
+  background: #1f7a5a;
+  color: #fff;
+  font-weight: 700;
+}
+
+.item-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.mine-card {
+  display: flex;
+  gap: 18rpx;
+  padding: 18rpx;
+}
+
+.mine-cover {
+  background: #e5ece9;
+  border-radius: 8rpx;
+  flex: 0 0 156rpx;
+  height: 156rpx;
+  width: 156rpx;
+}
+
+.mine-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.mine-title {
+  font-size: 30rpx;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.mine-meta {
+  color: #7b8794;
+  font-size: 24rpx;
+  margin-top: 12rpx;
+}
+
+.mine-actions {
+  display: flex;
+  gap: 12rpx;
+  margin-top: 18rpx;
+}
+
+.mini-btn.danger {
+  background: #fff1f2;
+  color: #be123c;
+}
+
+.post-card {
+  padding: 24rpx;
+}
+
+.post-content {
+  color: #52606d;
+  line-height: 1.45;
+  margin-top: 10rpx;
+  max-height: 76rpx;
+  overflow: hidden;
+}

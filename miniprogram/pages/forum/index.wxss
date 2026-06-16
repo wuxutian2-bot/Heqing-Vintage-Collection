@@ -1,0 +1,69 @@
+.forum-hero {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.hero-action {
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 8rpx;
+  color: #1f7a5a;
+  font-weight: 700;
+  height: 68rpx;
+  padding: 0 30rpx;
+}
+
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18rpx;
+}
+
+.post-card {
+  display: flex;
+  gap: 18rpx;
+  padding: 24rpx;
+}
+
+.post-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.post-title {
+  font-size: 32rpx;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.post-content {
+  color: #52606d;
+  font-size: 26rpx;
+  line-height: 1.45;
+  margin-top: 10rpx;
+  max-height: 76rpx;
+  overflow: hidden;
+}
+
+.post-meta {
+  color: #9aa5b1;
+  display: flex;
+  font-size: 23rpx;
+  justify-content: space-between;
+  margin-top: 18rpx;
+}
+
+.post-cover {
+  background: #e5ece9;
+  border-radius: 8rpx;
+  flex: 0 0 148rpx;
+  height: 148rpx;
+  width: 148rpx;
+}
+
+.list-end {
+  color: #9aa5b1;
+  font-size: 24rpx;
+  padding: 32rpx 0;
+  text-align: center;
+}

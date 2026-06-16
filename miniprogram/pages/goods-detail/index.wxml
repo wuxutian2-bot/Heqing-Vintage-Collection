@@ -1,0 +1,42 @@
+<view class="page detail-page">
+  <view wx:if="{{goods}}">
+    <swiper class="image-swiper" indicator-dots circular wx:if="{{goods.images.length}}">
+      <swiper-item wx:for="{{goods.images}}" wx:key="*this">
+        <image class="detail-image" mode="aspectFill" src="{{item}}" data-src="{{item}}" bindtap="previewImage"></image>
+      </swiper-item>
+    </swiper>
+    <image wx:else class="detail-image single" mode="aspectFill" src="{{goods.cover}}"></image>
+
+    <view class="card info-card">
+      <view class="price-row">
+        <text class="detail-price">￥{{goods.priceText}}</text>
+        <text class="status">{{goods.statusText}}</text>
+      </view>
+      <view class="detail-title">{{goods.title}}</view>
+      <view class="meta-row">
+        <text>{{goods.category}}</text>
+        <text>{{goods.viewCount || 0}} 次浏览</text>
+      </view>
+    </view>
+
+    <view class="card block-card">
+      <view class="block-title">商品描述</view>
+      <view class="detail-desc">{{goods.desc}}</view>
+    </view>
+
+    <view class="card block-card">
+      <view class="block-title">联系方式</view>
+      <view class="contact-row">
+        <text>{{goods.contact}}</text>
+        <button class="copy-btn" bindtap="copyContact">复制</button>
+      </view>
+    </view>
+
+    <view class="bottom-actions">
+      <button class="ghost-btn" bindtap="toggleFavorite">{{favorite ? '取消收藏' : '收藏'}}</button>
+      <button class="primary-btn" bindtap="copyContact">联系卖家</button>
+    </view>
+  </view>
+  <view wx:elif="{{loading}}" class="empty">加载中...</view>
+  <view wx:else class="empty">商品不存在或已下架</view>
+</view>

@@ -1,0 +1,54 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/goods-detail/index",
+    "pages/publish-goods/index",
+    "pages/forum/index",
+    "pages/post-detail/index",
+    "pages/publish-post/index",
+    "pages/profile/index",
+    "pages/login/index"
+  ],
+  "window": {
+    "backgroundColor": "#F4F7F6",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#F4F7F6",
+    "navigationBarTitleText": "校园二手集",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#6B7280",
+    "selectedColor": "#1F7A5A",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "市场",
+        "iconPath": "images/icons/home.png",
+        "selectedIconPath": "images/icons/home-active.png"
+      },
+      {
+        "pagePath": "pages/publish-goods/index",
+        "text": "发布",
+        "iconPath": "images/icons/goods.png",
+        "selectedIconPath": "images/icons/goods-active.png"
+      },
+      {
+        "pagePath": "pages/forum/index",
+        "text": "社区",
+        "iconPath": "images/icons/business.png",
+        "selectedIconPath": "images/icons/business-active.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的",
+        "iconPath": "images/icons/usercenter.png",
+        "selectedIconPath": "images/icons/usercenter-active.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents"
+}

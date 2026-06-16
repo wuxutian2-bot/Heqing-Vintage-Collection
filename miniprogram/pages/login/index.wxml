@@ -1,0 +1,8 @@
+<view class="page login-page">
+  <view class="login-panel card">
+    <image class="login-avatar" src="/images/avatar.png"></image>
+    <view class="login-title">登录校园二手集</view>
+    <view class="login-desc">登录后可以发布商品、发帖、评论和收藏好物</view>
+    <button class="primary-btn login-btn" loading="{{loading}}" bindtap="login">微信一键登录</button>
+  </view>
+</view>

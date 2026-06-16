@@ -1,0 +1,27 @@
+<view class="page forum-page">
+  <view class="hero forum-hero">
+    <view>
+      <view class="hero-title">交易前先问问</view>
+      <view class="hero-subtitle">经验、避坑、求购和同校交流都放这里</view>
+    </view>
+    <button class="hero-action" bindtap="goPublish">发帖</button>
+  </view>
+
+  <view wx:if="{{posts.length}}" class="post-list">
+    <view wx:for="{{posts}}" wx:key="_id" class="post-card card" data-id="{{item._id}}" bindtap="goDetail">
+      <view class="post-main">
+        <view class="post-title">{{item.title}}</view>
+        <view class="post-content">{{item.content}}</view>
+        <view class="post-meta">
+          <text>{{item.createdText}}</text>
+          <text>{{item.likeCount || 0}} 赞 · {{item.commentCount || 0}} 评论</text>
+        </view>
+      </view>
+      <image wx:if="{{item.cover}}" class="post-cover" mode="aspectFill" src="{{item.cover}}"></image>
+    </view>
+  </view>
+
+  <view wx:if="{{!loading && !posts.length}}" class="empty">还没有帖子，发起第一场讨论吧</view>
+  <view wx:if="{{loading}}" class="empty">加载中...</view>
+  <view wx:if="{{!hasMore && posts.length}}" class="list-end">已经到底啦</view>
+</view>

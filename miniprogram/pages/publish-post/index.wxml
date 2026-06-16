@@ -1,0 +1,21 @@
+<view class="page publish-page">
+  <view class="field">
+    <text class="field-label">帖子标题</text>
+    <input class="input" value="{{title}}" maxlength="40" placeholder="想和大家聊什么？" data-field="title" bindinput="onInput" />
+  </view>
+  <view class="field">
+    <text class="field-label">内容</text>
+    <textarea class="textarea post-textarea" value="{{content}}" maxlength="1000" placeholder="写下求购、经验、交易提醒或校园生活问题" data-field="content" bindinput="onInput"></textarea>
+  </view>
+  <view class="field">
+    <text class="field-label">图片</text>
+    <view class="image-grid">
+      <view wx:for="{{images}}" wx:key="*this" class="image-cell">
+        <image class="upload-image" mode="aspectFill" src="{{item}}"></image>
+        <view class="remove-image" data-index="{{index}}" bindtap="removeImage">×</view>
+      </view>
+      <view wx:if="{{images.length < 6}}" class="add-image" bindtap="chooseImages">+</view>
+    </view>
+  </view>
+  <button class="primary-btn submit-btn" loading="{{submitting}}" bindtap="submit">发布帖子</button>
+</view>
