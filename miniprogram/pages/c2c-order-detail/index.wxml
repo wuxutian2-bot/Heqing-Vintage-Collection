@@ -1,0 +1,17 @@
+<view class="detail-page" wx:if="{{order}}">
+  <view class="status-card {{order.tone}}"><view class="status-label">CAMPUS SAFE TRADE · {{order.roleText}}</view><view class="status-title">{{order.title}}</view><view class="status-desc">{{order.desc}}</view><view wx:if="{{order.canPay && order.expiresText}}" class="expire">支付截止：{{order.expiresText}}</view></view>
+  <view class="goods-card"><image class="cover" mode="aspectFill" src="{{order.cover}}"></image><view class="goods-main"><view class="role-chip">{{order.roleText}}</view><view class="goods-title">{{order.title}}</view><view class="goods-desc">对方：{{order.counterpart.displayName}}</view></view><view class="price">¥{{order.totalText}}</view></view>
+  <view class="info-card"><view class="section-title">当面交付约定</view><view class="copy">请按订单中的交付说明核对地点和时间；付款、确认收货与争议处理均以本订单服务端记录为准。</view><view wx:if="{{order.deliveryNote}}" class="note">交付说明：{{order.deliveryNote}}</view></view>
+  <view class="info-card"><view class="section-title">资金记录</view><view class="row"><text>买家实付</text><text>¥{{order.totalText}}</text></view><view wx:if="{{order.role === 'seller'}}" class="row"><text>服务费</text><text>¥{{order.feeText}}</text></view><view wx:if="{{order.role === 'seller'}}" class="row total"><text>卖方待结算</text><text>¥{{order.sellerText}}</text></view><view wx:if="{{order.role === 'buyer'}}" class="security">买家确认收货前，卖方不会获得可结算记录。</view></view>
+  <view class="info-card meta"><view>交易编号：{{order.orderNo}}</view><view>创建时间：{{order.createdText || '刚刚'}}</view><view wx:if="{{order.paidText}}">付款确认：{{order.paidText}}</view><view class="security">真实资金状态以已验签的支付/退款回调为准，页面提示不直接改变资金状态。</view></view>
+  <view class="bottom-actions">
+    <button wx:if="{{order.canCancel}}" class="ghost" loading="{{acting}}" disabled="{{paying || acting}}" bindtap="cancelOrder">取消订单</button>
+    <button wx:if="{{order.canPay}}" class="primary" loading="{{paying}}" disabled="{{paying || acting || !paymentReady}}" bindtap="payOrder">{{paymentReady ? '微信支付' : '支付配置中'}}</button>
+    <button wx:elif="{{order.canDeliver}}" class="primary" loading="{{acting}}" disabled="{{acting}}" bindtap="confirmDelivery">确认交付</button>
+    <button wx:elif="{{order.canConfirm}}" class="primary" loading="{{acting}}" disabled="{{acting}}" bindtap="confirmReceipt">确认收货</button>
+    <button wx:elif="{{order.canPayout}}" class="primary" loading="{{acting}}" disabled="{{acting}}" bindtap="requestPayout">申请结算</button>
+    <button wx:else class="ghost" loading="{{acting}}" disabled="{{acting}}" bindtap="goOrders">全部交易</button>
+    <button wx:if="{{order.canDispute}}" class="dispute" loading="{{acting}}" disabled="{{acting}}" bindtap="openDispute">争议</button>
+  </view>
+</view>
+<view wx:elif="{{loading}}" class="empty">正在加载担保订单...</view><view wx:else class="empty">订单不存在或无权查看</view>

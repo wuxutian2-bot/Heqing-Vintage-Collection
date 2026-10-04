@@ -1,0 +1,21 @@
+.admin-orders { background: #f5f6f7; min-height: 100vh; }
+.status-scroll { background: #fff; border-bottom: 1rpx solid #e5e7eb; white-space: nowrap; }
+.status-row { display: flex; min-width: max-content; padding: 0 20rpx; }
+.status-tab { color: #6b7280; flex: 0 0 auto; font-size: 26rpx; padding: 26rpx 24rpx 22rpx; }
+.status-tab.active { border-bottom: 5rpx solid #16784b; color: #16784b; font-weight: 700; }
+.order-list { display: flex; flex-direction: column; gap: 16rpx; padding: 20rpx; }
+.order-card { background: #fff; border: 1rpx solid #e5e7eb; padding: 24rpx; }
+.order-head, .order-foot { align-items: center; display: flex; justify-content: space-between; }
+.building { font-size: 30rpx; font-weight: 750; }
+.muted { color: #8b939f; font-size: 23rpx; margin-top: 7rpx; }
+.status { color: #16784b; font-size: 25rpx; font-weight: 700; }
+.status.danger { color: #b42318; }
+.summary { color: #374151; font-size: 26rpx; line-height: 1.5; margin-top: 22rpx; }
+.delivery-info { background: #f5f6f7; color: #4b5563; font-size: 24rpx; margin: 18rpx 0; padding: 16rpx; }
+.shipping-warning { color: #b54708; font-size: 24rpx; margin: -4rpx 0 18rpx; }
+.shipping-done { color: #16784b; font-size: 24rpx; margin: -4rpx 0 18rpx; }
+.amount { color: #d85a18; font-size: 31rpx; font-weight: 800; }
+.order-actions { display: flex; gap: 12rpx; }
+.action-btn { background: #16784b; color: #fff; font-size: 24rpx; height: 66rpx; line-height: 66rpx; margin: 0; width: 180rpx; }
+.action-btn.secondary { background: #fff; border: 1rpx solid #16784b; color: #16784b; width: 210rpx; }
+.empty { color: #8b939f; padding: 180rpx 24rpx; text-align: center; }

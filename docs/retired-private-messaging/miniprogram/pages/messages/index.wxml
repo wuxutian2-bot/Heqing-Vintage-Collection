@@ -1,0 +1,32 @@
+<view class="page messages-page">
+  <view class="message-heading">站内消息</view>
+
+  <view wx:if="{{isGuest}}" class="guest-message-card">
+    <view class="guest-message-mark">聊</view>
+    <view class="guest-message-title">登录后查看站内消息</view>
+    <view class="guest-message-desc">与同学沟通商品和帖子，不需要公开微信号或手机号。</view>
+    <button class="guest-message-button" bindtap="goLogin">登录鹏宇优选</button>
+    <view class="guest-message-note">首页、市场和校园圈可直接浏览</view>
+  </view>
+
+  <block wx:else>
+    <view wx:if="{{conversations.length}}" class="conversation-list">
+      <view wx:for="{{conversations}}" wx:key="conversationId" class="conversation-item" data-id="{{item.conversationId}}" bindtap="goChat">
+        <image class="conversation-avatar" src="{{item.otherUser.avatarUrl}}"></image>
+        <view class="conversation-main">
+          <view class="conversation-head">
+            <text class="conversation-name">{{item.otherUser.displayName}}</text>
+            <text class="conversation-time">{{item.timeText}}</text>
+          </view>
+          <view class="conversation-bottom">
+            <text class="last-message">{{item.lastMessage}}</text>
+            <text wx:if="{{item.unreadCount}}" class="unread">{{item.unreadCount > 99 ? '99+' : item.unreadCount}}</text>
+          </view>
+          <view wx:if="{{item.context.sourceTitle}}" class="context-label">来自：{{item.context.sourceTitle}}</view>
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{loading}}" class="empty">正在加载消息...</view>
+    <view wx:elif="{{!conversations.length}}" class="empty">暂时没有消息，可以从商品、帖子或评论区联系同学</view>
+  </block>
+</view>

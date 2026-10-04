@@ -1,0 +1,45 @@
+<view class="detail-page" wx:if="{{order}}">
+  <view class="status-card {{order.tone}}">
+    <view class="status-label">PLATFORM ORDER</view>
+    <view class="status-title">{{order.title}}</view>
+    <view class="status-desc">{{order.desc}}</view>
+    <view wx:if="{{order.canPay && order.expiresText}}" class="expire">支付截止：{{order.expiresText}}</view>
+  </view>
+
+  <view class="goods-card">
+    <image class="goods-cover" mode="aspectFill" src="{{order.cover}}"></image>
+    <view class="goods-main">
+      <view class="platform-label">鹏宇优选平台出售</view>
+      <view class="goods-title">{{order.title}}</view>
+      <view class="goods-desc">{{order.description}}</view>
+    </view>
+    <view class="goods-price">¥{{order.totalAmountText}}</view>
+  </view>
+
+  <view class="info-card">
+    <view class="section-title">交付安排</view>
+    <view class="fulfillment-copy">{{order.fulfillmentText}}</view>
+    <view class="assurance-row"><text class="assurance-mark">✓</text><text>平台负责交付和订单售后</text></view>
+  </view>
+
+  <view class="info-card amount-card">
+    <view class="amount-row"><text>平台商品</text><text>¥{{order.totalAmountText}}</text></view>
+    <view class="amount-row total"><text>订单合计</text><text>¥{{order.totalAmountText}}</text></view>
+  </view>
+
+  <view class="info-card order-meta">
+    <view>订单编号：{{order.orderNo}}</view>
+    <view>下单时间：{{order.createdText || '刚刚'}}</view>
+    <view wx:if="{{order.paidText}}">支付确认：{{order.paidText}}</view>
+    <view class="security-tip">前端支付成功提示不直接改变订单状态，页面展示的是服务端核对结果。</view>
+  </view>
+
+  <view class="bottom-actions">
+    <button wx:if="{{order.canCancel}}" class="ghost-btn" loading="{{cancelling}}" disabled="{{paying || cancelling}}" bindtap="cancelOrder">取消订单</button>
+    <button wx:if="{{order.canPay}}" class="primary-btn" loading="{{paying}}" disabled="{{paying || cancelling || !paymentReady}}" bindtap="payOrder">{{paymentReady ? '微信支付' : '支付配置中'}}</button>
+    <button wx:else class="ghost-btn" loading="{{refreshing}}" bindtap="refreshOrder">刷新状态</button>
+    <button wx:if="{{!order.canPay}}" class="primary-btn" bindtap="goOrders">全部订单</button>
+  </view>
+</view>
+<view wx:elif="{{loading}}" class="empty">正在加载市场订单...</view>
+<view wx:else class="empty">订单不存在或无权查看</view>

@@ -1,21 +1,40 @@
 <view class="page publish-page">
-  <view class="field">
-    <text class="field-label">帖子标题</text>
-    <input class="input" value="{{title}}" maxlength="40" placeholder="想和大家聊什么？" data-field="title" bindinput="onInput" />
+  <view class="publish-hero">
+    <view class="publish-kicker">校园生活情报站</view>
+    <view class="publish-title">分享一条校园动态</view>
+    <view class="publish-subtitle">说清楚时间、地点和需求，更容易得到同学回应。</view>
   </view>
-  <view class="field">
-    <text class="field-label">内容</text>
-    <textarea class="textarea post-textarea" value="{{content}}" maxlength="1000" placeholder="写下求购、经验、交易提醒或校园生活问题" data-field="content" bindinput="onInput"></textarea>
-  </view>
-  <view class="field">
-    <text class="field-label">图片</text>
-    <view class="image-grid">
-      <view wx:for="{{images}}" wx:key="*this" class="image-cell">
-        <image class="upload-image" mode="aspectFill" src="{{item}}"></image>
-        <view class="remove-image" data-index="{{index}}" bindtap="removeImage">×</view>
+
+  <view class="editor-card">
+    <view class="editor-section">
+      <view class="editor-label">选择频道</view>
+      <view class="category-grid">
+        <view wx:for="{{categories}}" wx:key="*this" class="category-chip {{category === item ? 'active' : ''}}" data-category="{{item}}" bindtap="selectCategory">{{item}}</view>
       </view>
-      <view wx:if="{{images.length < 6}}" class="add-image" bindtap="chooseImages">+</view>
+    </view>
+
+    <view class="editor-section with-line">
+      <view class="editor-label-row"><text class="editor-label">标题</text><text class="field-count">{{title.length}}/40</text></view>
+        <input class="title-input" value="{{title}}" maxlength="40" placeholder="可以用一段话勾起读者兴趣" data-field="title" bindinput="onInput" />
+    </view>
+
+    <view class="editor-section with-line">
+      <view class="editor-label-row"><text class="editor-label">正文</text><text class="field-count">{{content.length}}/1000</text></view>
+      <textarea class="post-textarea" value="{{content}}" maxlength="1000" placeholder="补充具体情况，注意不要公开手机号、宿舍门牌等敏感信息。" data-field="content" bindinput="onInput"></textarea>
+    </view>
+
+    <view class="editor-section with-line">
+      <view class="editor-label-row"><text class="editor-label">添加图片</text><text class="field-count">{{images.length}}/6</text></view>
+      <view class="image-grid">
+        <view wx:for="{{images}}" wx:key="*this" class="image-cell">
+          <image class="upload-image" mode="aspectFill" src="{{item}}"></image>
+          <view class="remove-image" data-index="{{index}}" bindtap="removeImage">×</view>
+        </view>
+        <view wx:if="{{images.length < 6}}" class="add-image" bindtap="chooseImages"><text>＋</text><view>照片</view></view>
+      </view>
     </view>
   </view>
-  <button class="primary-btn submit-btn" loading="{{submitting}}" bindtap="submit">发布帖子</button>
+
+  <view class="publish-note"><view class="note-dot">i</view><text>动态仅在校内展示，请注意保护隐私并保持友善交流。</text></view>
+  <button class="submit-btn" loading="{{submitting}}" disabled="{{submitting}}" bindtap="submit">发布到「{{category}}」</button>
 </view>

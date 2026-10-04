@@ -1,0 +1,11 @@
+<view class="page legal-page">
+  <view class="legal-header">
+    <view class="legal-title">{{title}}</view>
+    <view class="legal-date">更新日期：{{updatedAt}}</view>
+  </view>
+  <view class="legal-notice">正式发布前，运营方应在微信公众平台补充主体名称、联系方式和实际隐私保护指引，并确保与本页一致。</view>
+  <view wx:for="{{sections}}" wx:key="title" class="legal-section">
+    <view class="section-title">{{item.title}}</view>
+    <view class="section-content">{{item.content}}</view>
+  </view>
+</view>

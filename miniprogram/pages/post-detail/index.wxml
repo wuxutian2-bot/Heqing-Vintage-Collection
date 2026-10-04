@@ -1,29 +1,98 @@
 <view class="page post-detail-page">
   <view wx:if="{{post}}">
-    <view class="card post-card">
+    <view class="post-card">
+      <view class="detail-topline">
+        <view class="detail-badges">
+          <view wx:if="{{post.isPinned}}" class="pinned-badge">置顶</view>
+          <view class="category-badge">{{post.category}}</view>
+        </view>
+        <view class="campus-only"><text></text>校内动态</view>
+      </view>
+
+      <view class="author-row">
+        <image class="author-avatar" mode="aspectFill" src="{{post.author.avatarUrl}}"></image>
+        <view class="author-copy">
+          <view class="author-name">{{post.author.displayName}}</view>
+          <view class="author-time">{{post.createdText}} · 发布于校园圈</view>
+        </view>
+      </view>
+
       <view class="post-title">{{post.title}}</view>
-      <view class="post-meta">{{post.createdText}} · {{post.likeCount || 0}} 赞 · {{post.commentCount || 0}} 评论</view>
       <view class="post-content">{{post.content}}</view>
       <view wx:if="{{post.images.length}}" class="image-grid">
         <image wx:for="{{post.images}}" wx:key="*this" class="post-image" mode="aspectFill" src="{{item}}" data-src="{{item}}" bindtap="previewImage"></image>
       </view>
-      <button class="ghost-btn like-btn" bindtap="likePost">赞一下</button>
-    </view>
 
-    <view class="section-title">评论</view>
-    <view wx:if="{{comments.length}}" class="comment-list">
-      <view wx:for="{{comments}}" wx:key="_id" class="comment-card card">
-        <view class="comment-content">{{item.content}}</view>
-        <view class="comment-meta">{{item.nickName || '同学'}} · {{item.createdText}}</view>
+      <view class="post-stats">
+        <view><image src="/images/forum/eye.svg"></image><text>{{post.viewCount || 0}} 浏览</text></view>
+        <view><image src="/images/forum/comment.svg"></image><text>{{post.commentCount || 0}} 评论</text></view>
+        <view><image src="/images/forum/heart.svg"></image><text>{{post.likeCount || 0}} 赞</text></view>
+      </view>
+
+      <view class="detail-actions">
+        <button class="like-btn" bindtap="likePost"><image src="/images/forum/heart.svg"></image>赞一下</button>
+        <view wx:if="{{post.author.userId && post.author.userId === currentUserId}}" class="owner-action"><image src="/images/forum/comment.svg"></image>这是你的帖子</view>
+      </view>
+
+      <view wx:if="{{isAdmin || post.author.userId === currentUserId}}" class="moderation-panel">
+        <view class="moderation-copy">
+          <view class="moderation-title">{{isAdmin ? '内容治理' : '我的帖子'}}</view>
+          <view class="moderation-desc">{{isAdmin ? '管理操作由云端核验管理员权限' : '你可以删除自己发布的内容'}}</view>
+        </view>
+        <view class="moderation-actions">
+          <button wx:if="{{isAdmin}}" class="moderation-btn pin" loading="{{managingPost}}" bindtap="togglePinned">{{post.isPinned ? '取消置顶' : '置顶帖子'}}</button>
+          <button class="moderation-btn danger" loading="{{managingPost}}" bindtap="deletePost">删除帖子</button>
+        </view>
       </view>
     </view>
-    <view wx:else class="empty">还没有评论</view>
+
+    <view class="comment-heading">
+      <view>
+        <view class="comment-kicker">同学回应</view>
+        <view class="comment-title">评论与回复 {{comments.length}}</view>
+      </view>
+      <view class="comment-note">友善交流</view>
+    </view>
+
+    <view wx:if="{{commentThreads.length}}" class="comment-list">
+      <view wx:for="{{commentThreads}}" wx:key="_id" wx:for-item="comment" class="comment-card">
+        <image class="comment-avatar" mode="aspectFill" src="{{comment.avatarUrl}}"></image>
+        <view class="comment-main">
+          <view class="comment-author"><text class="comment-author-name">{{comment.displayName}}</text><text class="comment-meta">{{comment.createdText}}</text></view>
+          <view class="comment-content">{{comment.content}}</view>
+          <view class="comment-actions">
+            <view class="comment-action" data-comment-id="{{comment._id}}" data-name="{{comment.displayName}}" catchtap="startReply"><image src="/images/forum/comment.svg"></image><text>回复</text></view>
+            <view class="comment-action {{comment.liked ? 'liked' : ''}}" data-comment-id="{{comment._id}}" catchtap="toggleCommentLike"><image src="/images/forum/heart.svg"></image><text>{{comment.likeCount || '赞'}}</text></view>
+            <view wx:if="{{isAdmin || comment.userId === currentUserId}}" class="comment-action delete" data-comment-id="{{comment._id}}" data-user-id="{{comment.userId}}" data-reply="0" catchtap="deleteComment"><text>删除</text></view>
+          </view>
+
+          <view wx:if="{{comment.replies.length}}" class="reply-list">
+            <view wx:for="{{comment.replies}}" wx:key="_id" wx:for-item="reply" class="reply-item">
+              <image class="reply-avatar" mode="aspectFill" src="{{reply.avatarUrl}}"></image>
+              <view class="reply-main">
+                <view class="reply-author"><text class="reply-author-name">{{reply.displayName}}</text><text>{{reply.createdText}}</text></view>
+                <view class="reply-content"><text wx:if="{{reply.replyToDisplayName}}">回复 <text class="reply-target">@{{reply.replyToDisplayName}}</text>：</text>{{reply.content}}</view>
+                <view class="comment-actions reply-actions">
+                  <view class="comment-action" data-comment-id="{{reply._id}}" data-name="{{reply.displayName}}" catchtap="startReply"><image src="/images/forum/comment.svg"></image><text>回复</text></view>
+                  <view class="comment-action {{reply.liked ? 'liked' : ''}}" data-comment-id="{{reply._id}}" catchtap="toggleCommentLike"><image src="/images/forum/heart.svg"></image><text>{{reply.likeCount || '赞'}}</text></view>
+                  <view wx:if="{{isAdmin || reply.userId === currentUserId}}" class="comment-action delete" data-comment-id="{{reply._id}}" data-user-id="{{reply.userId}}" data-reply="1" catchtap="deleteComment"><text>删除</text></view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view wx:else class="comment-empty"><view class="empty-mark">聊</view><view>还没有评论，来说第一句吧</view></view>
 
     <view class="comment-box">
-      <input class="comment-input" value="{{commentText}}" placeholder="写一条评论" bindinput="onCommentInput" />
-      <button class="comment-btn" loading="{{submitting}}" bindtap="submitComment">发送</button>
+      <view wx:if="{{replyingTo}}" class="replying-bar"><text>正在回复 {{replyingTo.displayName}}</text><view bindtap="cancelReply">取消</view></view>
+      <view class="composer-row">
+        <input class="comment-input" value="{{commentText}}" focus="{{commentInputFocus}}" placeholder="{{commentPlaceholder}}" confirm-type="send" bindinput="onCommentInput" bindconfirm="submitComment" />
+        <button class="comment-btn" loading="{{submitting}}" disabled="{{submitting}}" bindtap="submitComment">发送</button>
+      </view>
     </view>
   </view>
-  <view wx:elif="{{loading}}" class="empty">加载中...</view>
-  <view wx:else class="empty">帖子不存在</view>
+  <view wx:elif="{{loading}}" class="detail-loading"><view></view><view></view><view></view></view>
+  <view wx:else class="detail-empty"><view class="empty-mark">空</view><view>这条动态已不存在</view></view>
 </view>

@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "openapi": []
+  },
+  "triggers": [
+    {
+      "name": "expire-c2c-pending-orders",
+      "type": "timer",
+      "config": "0 */5 * * * * *"
+    }
+  ]
+}

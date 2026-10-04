@@ -1,0 +1,20 @@
+.orders-page { min-height: 100vh; background: #f3f6f4; color: #193f34; padding: 20rpx 22rpx 46rpx; }
+.hero { background: linear-gradient(135deg, #183f34, #237052); border-radius: 24rpx; color: #fff; padding: 30rpx 28rpx; }
+.hero-kicker { color: rgba(255,255,255,.6); font-size: 18rpx; font-weight: 800; letter-spacing: 3rpx; }
+.hero-title { font-size: 39rpx; font-weight: 900; margin-top: 8rpx; }
+.hero-copy { color: rgba(255,255,255,.75); font-size: 22rpx; line-height: 1.6; margin-top: 10rpx; }
+.order-list { margin-top: 18rpx; }
+.order-card { background: #fff; border: 1rpx solid #e1e8e4; border-radius: 20rpx; box-shadow: 0 8rpx 24rpx rgba(29,66,53,.04); margin-bottom: 16rpx; padding: 21rpx; }
+.order-top,.goods-row,.order-foot { align-items: center; display: flex; justify-content: space-between; }
+.role-chip { background: #edf6f0; border-radius: 999rpx; color: #287153; font-size: 19rpx; font-weight: 750; padding: 7rpx 13rpx; }
+.status { color: #b07b1c; font-size: 21rpx; font-weight: 800; }
+.goods-row { gap: 15rpx; margin-top: 17rpx; }
+.cover { background: #e8eeea; border-radius: 14rpx; flex: 0 0 108rpx; height: 108rpx; width: 108rpx; }
+.goods-main { flex: 1; min-width: 0; }
+.goods-title { color: #203f35; font-size: 27rpx; font-weight: 850; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.created { color: #8a9791; font-size: 20rpx; margin-top: 9rpx; }
+.amount { color: #c45141; font-size: 29rpx; font-weight: 900; }
+.order-foot { border-top: 1rpx solid #edf1ef; color: #7a8982; font-size: 19rpx; margin-top: 18rpx; padding-top: 15rpx; }
+.empty { align-items: center; color: #86938e; display: flex; flex-direction: column; padding: 180rpx 30rpx; text-align: center; }
+.empty-mark { align-items: center; background: #e8f1ec; border-radius: 27rpx; color: #2a7153; display: flex; font-size: 27rpx; font-weight: 850; height: 82rpx; justify-content: center; margin-bottom: 18rpx; width: 82rpx; }
+.empty-title { color: #294b3e; font-size: 28rpx; font-weight: 850; }.empty-copy { font-size: 22rpx; line-height: 1.6; margin-top: 11rpx; }.market-btn { background: #174c3b; border-radius: 15rpx; color: #fff; font-size: 24rpx; font-weight: 800; margin-top: 26rpx; padding: 0 35rpx; }

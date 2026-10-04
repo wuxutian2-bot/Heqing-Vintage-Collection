@@ -1,7 +1,7 @@
 <view class="page publish-page">
-  <view class="hero">
-    <view class="hero-title">让闲置重新流动</view>
-    <view class="hero-subtitle">图片清楚、价格真实，会更快被同学看到</view>
+  <view class="publish-note">
+    <view class="note-title">发布到校园闲置市场</view>
+    <view class="note-desc">个人发布支持平台担保交易，发布后也可在商品详情申请平台回收。请勿在公开描述中填写手机号、微信号等联系方式。</view>
   </view>
 
   <view class="field">
@@ -10,7 +10,7 @@
   </view>
   <view class="field">
     <text class="field-label">价格</text>
-    <input class="input" value="{{price}}" type="digit" placeholder="请输入数字" data-field="price" bindinput="onInput" />
+    <input class="input" value="{{price}}" type="digit" placeholder="出售价格；求购时填写预算" data-field="price" bindinput="onInput" />
   </view>
   <view class="field">
     <text class="field-label">分类</text>
@@ -23,12 +23,10 @@
     <textarea class="textarea" value="{{desc}}" maxlength="500" placeholder="成色、购买时间、配件、交易地点等" data-field="desc" bindinput="onInput"></textarea>
   </view>
   <view class="field">
-    <text class="field-label">联系方式</text>
-    <input class="input" value="{{contact}}" maxlength="40" placeholder="微信号或手机号" data-field="contact" bindinput="onInput" />
-  </view>
-
-  <view class="field">
-    <text class="field-label">商品图片</text>
+    <view class="image-field-title">
+      <text class="field-label">商品图片</text>
+      <text class="image-required">必填 · 至少1张</text>
+    </view>
     <view class="image-grid">
       <view wx:for="{{images}}" wx:key="*this" class="image-cell">
         <image class="upload-image" mode="aspectFill" src="{{item}}"></image>

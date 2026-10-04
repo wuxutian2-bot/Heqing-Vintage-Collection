@@ -12,10 +12,17 @@
   width: 100%;
 }
 
-.login-avatar {
-  border-radius: 50%;
-  height: 142rpx;
-  width: 142rpx;
+.brand-mark {
+  align-items: center;
+  background: #16784b;
+  border-radius: 24rpx;
+  color: #fff;
+  display: flex;
+  font-size: 48rpx;
+  font-weight: 800;
+  height: 112rpx;
+  justify-content: center;
+  width: 112rpx;
 }
 
 .login-title {
@@ -24,13 +31,39 @@
   margin-top: 28rpx;
 }
 
-.login-desc {
-  color: #7b8794;
-  line-height: 1.5;
-  margin: 18rpx 0 42rpx;
-  text-align: center;
+.agreement {
+  align-items: center;
+  color: #66756f;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 24rpx;
+  justify-content: center;
+  line-height: 1.8;
+  margin-top: 28rpx;
+  margin-bottom: 34rpx;
+}
+
+.agreement-label {
+  align-items: center;
+  display: flex;
+}
+
+.agreement checkbox {
+  transform: scale(.78);
+}
+
+.legal-link {
+  color: #16784b;
 }
 
 .login-btn {
   width: 100%;
+}
+
+.login-tip {
+  color: #6b7280;
+  font-size: 24rpx;
+  line-height: 1.6;
+  margin-top: 22rpx;
+  text-align: center;
 }

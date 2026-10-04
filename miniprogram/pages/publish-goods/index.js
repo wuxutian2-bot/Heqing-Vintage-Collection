@@ -1,6 +1,6 @@
 const { callCloud, requireLogin } = require("../../utils/cloud");
 
-const categories = ["数码", "教材", "生活", "服饰", "运动", "其他"];
+const categories = ["零食", "饮料", "数码", "教材", "学习用品", "生活用品", "服饰鞋包", "运动健身", "美妆护理", "票券卡类", "求购", "其他"];
 
 Page({
   data: {
@@ -9,13 +9,8 @@ Page({
     title: "",
     price: "",
     desc: "",
-    contact: "",
     images: [],
     submitting: false,
-  },
-
-  onShow() {
-    requireLogin();
   },
 
   onInput(e) {
@@ -50,7 +45,7 @@ Page({
     if (!this.data.title.trim()) return "标题不能为空";
     if (!this.data.price || Number.isNaN(Number(this.data.price)) || Number(this.data.price) < 0) return "价格必须是数字";
     if (!this.data.desc.trim()) return "描述不能为空";
-    if (!this.data.contact.trim()) return "联系方式不能为空";
+    if (!Array.isArray(this.data.images) || this.data.images.length === 0) return "请至少上传1张商品图片";
     return "";
   },
 
@@ -61,11 +56,13 @@ Page({
       if (filePath.indexOf("cloud://") === 0) {
         uploaded.push(filePath);
       } else {
-        const suffix = filePath.substring(filePath.lastIndexOf(".") + 1) || "jpg";
+        const suffixMatch = String(filePath).match(/\.([a-zA-Z0-9]+)(?:\?.*)?$/);
+        const suffix = suffixMatch ? suffixMatch[1].toLowerCase() : "jpg";
         const res = await wx.cloud.uploadFile({
           cloudPath: `goods/${Date.now()}-${Math.floor(Math.random() * 100000)}.${suffix}`,
           filePath,
         });
+        if (!res || !res.fileID) throw new Error("商品图片上传失败，请重试");
         uploaded.push(res.fileID);
       }
     }
@@ -92,7 +89,6 @@ Page({
           price: Number(this.data.price),
           desc: this.data.desc.trim(),
           category: categories[this.data.categoryIndex],
-          contact: this.data.contact.trim(),
           images,
         },
         { silent: true }
@@ -102,7 +98,6 @@ Page({
         title: "",
         price: "",
         desc: "",
-        contact: "",
         images: [],
         categoryIndex: 0,
       });

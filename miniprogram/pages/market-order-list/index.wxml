@@ -1,0 +1,42 @@
+<view class="orders-page">
+  <view class="orders-hero">
+    <view class="hero-kicker">PLATFORM ORDERS</view>
+    <view class="hero-title">市场订单</view>
+    <view class="hero-copy">这里记录“平台出售”商品的付款与交付状态。</view>
+  </view>
+
+  <scroll-view class="status-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="status-row">
+      <view wx:for="{{tabs}}" wx:key="key" class="status-tab {{activeStatus === item.key ? 'active' : ''}}" data-status="{{item.key}}" bindtap="switchTab">{{item.text}}</view>
+    </view>
+  </scroll-view>
+
+  <view wx:if="{{orders.length}}" class="order-list">
+    <view wx:for="{{orders}}" wx:key="_id" class="order-card" data-id="{{item._id}}" bindtap="goDetail">
+      <view class="order-head">
+        <view class="platform-label"><text class="platform-dot"></text>鹏宇优选平台出售</view>
+        <view class="status {{item.canPay ? 'attention' : ''}}">{{item.statusText}}</view>
+      </view>
+      <view class="goods-row">
+        <image class="goods-cover" mode="aspectFill" src="{{item.cover}}"></image>
+        <view class="goods-main">
+          <view class="goods-title">{{item.title}}</view>
+          <view class="created-text">{{item.createdText}}</view>
+        </view>
+        <view class="amount">¥{{item.totalAmountText}}</view>
+      </view>
+      <view class="order-foot">
+        <text>支付与退款结果以微信支付记录为准</text>
+        <text class="detail-link">查看详情 ›</text>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{loading && !orders.length}}" class="empty-state">正在加载市场订单...</view>
+  <view wx:elif="{{!loading && !orders.length}}" class="empty-state">
+    <view class="empty-mark">单</view>
+    <view class="empty-title">当前没有市场订单</view>
+    <view class="empty-copy">标有“平台出售”的商品支持小程序下单付款。</view>
+    <button class="market-btn" bindtap="goMarket">去市场看看</button>
+  </view>
+</view>

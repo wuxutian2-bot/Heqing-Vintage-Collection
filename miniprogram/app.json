@@ -1,19 +1,43 @@
 {
   "pages": [
+    "pages/forum/index",
+    "pages/store/index",
+    "pages/store-product/index",
+    "pages/cart/index",
+    "pages/checkout/index",
+    "pages/order-list/index",
+    "pages/order-detail/index",
+    "pages/market-order-list/index",
+    "pages/market-order-detail/index",
+    "pages/c2c-order-list/index",
+    "pages/c2c-order-detail/index",
+    "pages/recovery-list/index",
+    "pages/admin-store/index",
+    "pages/admin-orders/index",
+    "pages/admin-market-recovery/index",
     "pages/home/index",
     "pages/goods-detail/index",
     "pages/publish-goods/index",
-    "pages/forum/index",
     "pages/post-detail/index",
     "pages/publish-post/index",
     "pages/profile/index",
-    "pages/login/index"
+    "pages/login/index",
+    "pages/address/index",
+    "pages/legal/index"
+  ],
+  "subpackages": [
+    {
+      "root": "campus-map",
+      "pages": [
+        "pages/index"
+      ]
+    }
   ],
   "window": {
-    "backgroundColor": "#F4F7F6",
+    "backgroundColor": "#F5F6F7",
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#F4F7F6",
-    "navigationBarTitleText": "校园二手集",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "navigationBarTitleText": "鹏宇优选",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
@@ -23,28 +47,28 @@
     "borderStyle": "white",
     "list": [
       {
-        "pagePath": "pages/home/index",
-        "text": "市场",
-        "iconPath": "images/icons/home.png",
-        "selectedIconPath": "images/icons/home-active.png"
+        "pagePath": "pages/store/index",
+        "text": "首页",
+        "iconPath": "images/icons/tab-home.png",
+        "selectedIconPath": "images/icons/tab-home.png"
       },
       {
-        "pagePath": "pages/publish-goods/index",
-        "text": "发布",
-        "iconPath": "images/icons/goods.png",
-        "selectedIconPath": "images/icons/goods-active.png"
+        "pagePath": "pages/home/index",
+        "text": "市场",
+        "iconPath": "images/icons/tab-market.png",
+        "selectedIconPath": "images/icons/tab-market.png"
       },
       {
         "pagePath": "pages/forum/index",
-        "text": "社区",
-        "iconPath": "images/icons/business.png",
-        "selectedIconPath": "images/icons/business-active.png"
+        "text": "校园圈",
+        "iconPath": "images/icons/tab-forum.png",
+        "selectedIconPath": "images/icons/tab-forum.png"
       },
       {
         "pagePath": "pages/profile/index",
         "text": "我的",
-        "iconPath": "images/icons/usercenter.png",
-        "selectedIconPath": "images/icons/usercenter-active.png"
+        "iconPath": "images/icons/tab-profile.png",
+        "selectedIconPath": "images/icons/tab-profile.png"
       }
     ]
   },

@@ -1,0 +1,59 @@
+<view class="recovery-page">
+  <view class="recovery-hero">
+    <view class="hero-kicker">RECOVERY DESK</view>
+    <view class="hero-title">我的回收</view>
+    <view class="hero-copy">平台完成验货和收购后，你可按回收单领取款项。</view>
+    <view class="hero-stats">
+      <view class="hero-stat"><text class="stat-value">{{recoveries.length}}</text><text>回收申请</text></view>
+      <view class="hero-stat"><text class="stat-value">{{claimableCount}}</text><text>可领取</text></view>
+      <view class="hero-stat"><text class="stat-value">{{processingCount}}</text><text>处理中</text></view>
+    </view>
+  </view>
+
+  <view class="safe-note">
+    <view class="safe-mark">¥</view>
+    <view>
+      <view class="safe-title">领取通过微信官方确认页完成</view>
+      <view class="safe-copy">页面返回不等于到账，最终结果以微信支付回调或服务端查单为准；失败时不会重复扣减回收款。</view>
+    </view>
+  </view>
+
+  <view wx:if="{{recoveries.length}}" class="recovery-list">
+    <view wx:for="{{recoveries}}" wx:key="_id" class="recovery-card">
+      <view class="card-head">
+        <image class="goods-cover" mode="aspectFill" src="{{item.cover}}"></image>
+        <view class="goods-main">
+          <view class="goods-title">{{item.title}}</view>
+          <view class="created-text">申请于 {{item.createdText || '刚刚'}}</view>
+        </view>
+        <view class="status-pill">{{item.statusText}}</view>
+      </view>
+
+      <view class="progress-tip">{{item.statusTip}}</view>
+
+      <view wx:if="{{item.hasConfirmedAmount}}" class="amount-panel">
+        <view class="amount-item"><text>回收总价</text><text>¥{{item.quoteAmountText}}</text></view>
+        <view class="amount-item"><text>费用</text><text>− ¥{{item.feeAmountText}}</text></view>
+        <view class="amount-item net"><text>可得回收款</text><text>¥{{item.netAmountText}}</text></view>
+      </view>
+
+      <view wx:if="{{item.claim}}" class="claim-row">
+        <view>
+          <view class="claim-label">领取单状态</view>
+          <view class="claim-status {{item.claim.statusTone}}">{{item.claim.statusText}}</view>
+        </view>
+        <view class="claim-amount">¥{{item.claim.amountText}}</view>
+      </view>
+
+      <button wx:if="{{item.action}}" class="claim-btn {{item.action === 'query' ? 'secondary' : ''}}" data-action="{{item.action}}" data-recovery-id="{{item._id}}" data-claim-id="{{item.claim._id}}" loading="{{processingId === item._id || processingId === item.claim._id}}" disabled="{{!!processingId}}" bindtap="onClaimTap">{{item.actionText}}</button>
+    </view>
+  </view>
+
+  <view wx:if="{{loading && !recoveries.length}}" class="empty-state">正在加载回收记录...</view>
+  <view wx:elif="{{!loading && !recoveries.length}}" class="empty-state">
+    <view class="empty-mark">收</view>
+    <view class="empty-title">还没有回收申请</view>
+    <view class="empty-copy">打开自己发布的普通商品，即可申请平台回收。</view>
+    <button class="market-btn" bindtap="goMarket">去市场看看</button>
+  </view>
+</view>

@@ -1,0 +1,87 @@
+<view class="store-page">
+  <view class="top-panel">
+    <view class="brand-row">
+      <view class="brand-name">鹏宇优选</view>
+      <view class="brand-slogan">宿舍好物 · 送货上门</view>
+    </view>
+    <picker wx:if="{{isGuest}}" class="address-picker" mode="selector" range="{{buildingOptions}}" value="{{browseBuildingIndex}}" bindchange="onBrowseBuildingChange">
+      <view class="address-row">
+        <view class="address-pin">⌖</view>
+        <view class="address-main">
+          <view class="address-label">当前浏览</view>
+          <view class="address-text">{{currentBuildingNo}}号楼商品</view>
+          <view class="address-helper">可直接切换楼栋 · 登录后保存配送地址</view>
+        </view>
+        <view class="address-action">切换楼栋</view>
+        <view class="address-arrow">›</view>
+      </view>
+    </picker>
+    <view wx:else class="address-row" bindtap="goAddress">
+      <view class="address-pin">⌖</view>
+      <view class="address-main">
+        <view class="address-label">送至</view>
+        <view class="address-text">{{defaultAddress.displayText || '请选择宿舍地址'}}</view>
+        <view wx:if="{{!defaultAddress}}" class="address-helper">当前正在浏览{{currentBuildingNo}}号楼商品</view>
+      </view>
+      <view class="address-arrow">›</view>
+    </view>
+    <view class="search-row">
+      <view class="search-icon">⌕</view>
+      <input class="search-input" value="{{keyword}}" placeholder="搜索本楼商品" confirm-type="search" bindinput="onKeywordInput" bindconfirm="onSearch" />
+      <button class="search-btn" bindtap="onSearch">搜索</button>
+    </view>
+  </view>
+
+  <view wx:if="{{selectedOutlet}}" class="outlet-strip">
+    <text>{{selectedOutlet.name}}</text>
+    <text>{{selectedOutlet.notice || '本楼商品送到宿舍门口'}}</text>
+  </view>
+
+  <view wx:if="{{selectedOutlet}}" class="store-body">
+    <scroll-view class="category-rail" scroll-y enhanced show-scrollbar="{{false}}">
+      <view wx:for="{{categories}}" wx:key="*this" class="category-item {{activeCategory === item ? 'active' : ''}}" data-category="{{item}}" bindtap="onCategoryTap">
+        <view class="category-text">{{item}}</view>
+      </view>
+    </scroll-view>
+
+    <scroll-view class="product-scroll" scroll-y enhanced show-scrollbar="{{false}}">
+      <view class="list-heading">
+        <view>{{activeCategory}}</view>
+        <view class="list-count">{{products.length}}款</view>
+      </view>
+      <view wx:for="{{products}}" wx:key="_id" class="product-row" data-id="{{item._id}}" bindtap="goProduct">
+        <image class="product-image" mode="aspectFill" src="{{item.image}}"></image>
+        <view class="product-main">
+          <view class="product-title">{{item.title}}</view>
+          <view class="product-stock {{item.stock === 0 ? 'sold-out' : ''}}">{{item.stockText}}</view>
+          <view class="product-bottom">
+            <view class="product-price"><text class="price-sign">¥</text>{{item.priceText}}</view>
+            <button class="add-btn {{item.stock === 0 ? 'disabled' : ''}}" data-id="{{item._id}}" disabled="{{item.stock === 0}}" catchtap="addToCart">＋</button>
+          </view>
+        </view>
+      </view>
+      <view class="empty product-empty" wx:if="{{loading}}">正在加载...</view>
+      <view class="empty product-empty" wx:elif="{{!products.length}}">当前分类还没有商品</view>
+    </scroll-view>
+  </view>
+
+  <view class="empty-state" wx:if="{{!loading && !selectedOutlet}}">
+    <view class="empty-mark">{{currentBuildingNo}}</view>
+    <view class="empty-title">{{currentBuildingNo}}号楼代售点尚未初始化</view>
+    <view class="empty-desc">管理员初始化商品表后，本楼商品会显示在这里。</view>
+    <button wx:if="{{canManageStore}}" class="primary-btn setup-btn" bindtap="goAdmin">进入经营管理</button>
+  </view>
+
+  <view class="store-fab-row">
+    <button class="cart-fab" bindtap="goCart">
+      <image class="store-fab-icon" mode="aspectFit" src="/images/icons/cart.svg"></image>
+      <text class="store-fab-label">购物车</text>
+      <text wx:if="{{cartCount}}" class="cart-count">{{cartCount}}</text>
+    </button>
+    <view wx:if="{{canManageStore}}" class="store-fab-divider"></view>
+    <button wx:if="{{canManageStore}}" class="admin-fab" bindtap="goAdmin">
+      <image class="store-fab-icon" mode="aspectFit" src="/images/icons/manage.svg"></image>
+      <text class="store-fab-label">管理</text>
+    </button>
+  </view>
+</view>

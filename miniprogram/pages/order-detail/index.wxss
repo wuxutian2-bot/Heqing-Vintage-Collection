@@ -1,0 +1,18 @@
+.detail-page { background: #f5f6f7; min-height: 100vh; padding: 20rpx 20rpx 150rpx; }
+.status-card { background: #16784b; color: #fff; padding: 34rpx 28rpx; }
+.status-title { font-size: 38rpx; font-weight: 800; }
+.status-desc, .expire { font-size: 25rpx; margin-top: 10rpx; opacity: .9; }
+.info-card { background: #fff; border: 1rpx solid #e5e7eb; margin-top: 18rpx; padding: 24rpx; }
+.section-title { font-size: 30rpx; font-weight: 750; }
+.primary-info { font-size: 29rpx; font-weight: 700; margin-top: 18rpx; }
+.muted { color: #6b7280; font-size: 24rpx; margin-top: 10rpx; }
+.order-item { align-items: center; border-bottom: 1rpx solid #edf0f2; display: flex; gap: 16rpx; padding: 20rpx 0; }
+.item-image { background: #eef1ef; height: 92rpx; width: 92rpx; }
+.item-title { flex: 1; font-size: 26rpx; }
+.item-price { color: #4b5563; font-size: 24rpx; }
+.amount-row { display: flex; font-size: 25rpx; justify-content: space-between; padding-top: 18rpx; }
+.amount-row.total { font-size: 29rpx; font-weight: 800; }
+.order-meta { color: #6b7280; font-size: 23rpx; line-height: 1.8; }
+.bottom-actions { background: #fff; border-top: 1rpx solid #e5e7eb; bottom: 0; display: flex; gap: 16rpx; left: 0; padding: 16rpx 24rpx calc(16rpx + env(safe-area-inset-bottom)); position: fixed; right: 0; }
+.bottom-actions button { flex: 1; }
+.empty { color: #8b939f; padding: 200rpx 24rpx; text-align: center; }

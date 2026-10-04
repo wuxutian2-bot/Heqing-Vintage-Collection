@@ -1,8 +1,17 @@
 <view class="page login-page">
   <view class="login-panel card">
-    <image class="login-avatar" src="/images/avatar.png"></image>
-    <view class="login-title">登录校园二手集</view>
-    <view class="login-desc">登录后可以发布商品、发帖、评论和收藏好物</view>
-    <button class="primary-btn login-btn" loading="{{loading}}" bindtap="login">微信一键登录</button>
+    <view class="brand-mark">鹏</view>
+    <view class="login-title">登录鹏宇优选</view>
+    <checkbox-group class="agreement" bindchange="onAgreementChange">
+      <label class="agreement-label">
+        <checkbox value="agreed" checked="{{agreed}}" color="#16784B"></checkbox>
+        <text>我已阅读并同意</text>
+      </label>
+      <text class="legal-link" data-mode="terms" catchtap="openLegal">《用户协议》</text>
+      <text>和</text>
+      <text class="legal-link" data-mode="privacy" catchtap="openLegal">《隐私说明》</text>
+    </checkbox-group>
+    <button class="primary-btn login-btn" loading="{{loading}}" bindtap="login">安全登录</button>
+    <view class="login-tip">登录后可使用下单、发布、评论与收藏；下单配送时再确认宿舍地址。</view>
   </view>
 </view>

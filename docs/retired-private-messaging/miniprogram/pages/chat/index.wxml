@@ -1,0 +1,27 @@
+<view class="chat-page">
+  <view wx:if="{{context.sourceTitle}}" class="context-bar">本次沟通来自：{{context.sourceTitle}}</view>
+  <view wx:if="{{otherUser}}" class="safety-bar">
+    <text>仅使用站内沟通，交易前请核实信息</text>
+    <view class="safety-actions"><text bindtap="toggleBlock">{{blockedByMe ? '解除屏蔽' : '屏蔽'}}</text><text bindtap="reportUser">举报</text></view>
+  </view>
+
+  <scroll-view class="message-scroll" scroll-y enhanced scroll-with-animation scroll-into-view="{{scrollIntoView}}">
+    <button wx:if="{{hasMore}}" class="older-btn" bindtap="loadOlder">加载更早消息</button>
+    <view wx:if="{{loading}}" class="empty">正在加载...</view>
+    <view wx:elif="{{!messages.length}}" class="empty">还没有消息，礼貌地打个招呼吧</view>
+    <view class="message-list">
+      <view wx:for="{{messages}}" wx:key="_id" id="msg-{{item._id}}" class="message-row {{item.isMine ? 'mine' : ''}}">
+        <image wx:if="{{!item.isMine}}" class="message-avatar" src="{{otherUser.avatarUrl}}"></image>
+        <view class="message-wrap">
+          <view class="message-bubble">{{item.content}}</view>
+          <view class="message-time">{{item.timeText}}</view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="input-bar">
+    <input class="message-input" value="{{inputText}}" maxlength="1000" confirm-type="send" disabled="{{!canSend}}" placeholder="{{canSend ? '输入消息' : '当前无法发送消息'}}" bindinput="onInput" bindconfirm="send" />
+    <button class="send-btn" loading="{{sending}}" disabled="{{!canSend || !inputText || sending}}" bindtap="send">发送</button>
+  </view>
+</view>

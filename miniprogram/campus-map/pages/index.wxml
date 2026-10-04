@@ -1,0 +1,21 @@
+<view class="map-page">
+  <view class="map-hero">
+    <view class="map-kicker">CAMPUS GUIDE</view>
+    <view class="map-title">鹏宇校园地图</view>
+    <view class="map-subtitle">宿舍、教学楼、食堂和校门位置一图查看</view>
+  </view>
+
+  <view class="map-card">
+    <image class="campus-map" mode="widthFix" src="{{mapUrl}}" bindtap="previewMap"></image>
+    <view class="zoom-hint">
+      <view class="zoom-icon">＋</view>
+      <view><view class="zoom-title">点击地图全屏查看</view><view class="zoom-copy">全屏后可双指缩放、拖动寻找楼栋</view></view>
+    </view>
+  </view>
+
+  <view class="map-tips">
+    <view class="tip-chip">南门 · 开学报到</view>
+    <view class="tip-chip">北门 · 医务室方向</view>
+    <view class="tip-chip">一至四食堂</view>
+  </view>
+</view>

@@ -1,0 +1,96 @@
+.map-page {
+  background: #f3f6f4;
+  box-sizing: border-box;
+  min-height: 100vh;
+  padding-bottom: calc(48rpx + env(safe-area-inset-bottom));
+}
+
+.map-hero {
+  background: linear-gradient(145deg, #123d32 0%, #176347 100%);
+  color: #fff;
+  padding: 38rpx 28rpx 88rpx;
+}
+
+.map-kicker {
+  color: #f2c879;
+  font-size: 19rpx;
+  font-weight: 800;
+  letter-spacing: 4rpx;
+}
+
+.map-title {
+  font-size: 42rpx;
+  font-weight: 850;
+  margin-top: 12rpx;
+}
+
+.map-subtitle {
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 23rpx;
+  line-height: 1.6;
+  margin-top: 8rpx;
+}
+
+.map-card {
+  background: #fff;
+  border: 1rpx solid #e1e8e4;
+  border-radius: 24rpx;
+  box-shadow: 0 18rpx 42rpx rgba(26, 67, 51, 0.11);
+  margin: -54rpx 24rpx 0;
+  overflow: hidden;
+}
+
+.campus-map {
+  background: #e9eee9;
+  display: block;
+  width: 100%;
+}
+
+.zoom-hint {
+  align-items: center;
+  border-top: 1rpx solid #edf1ef;
+  display: flex;
+  padding: 20rpx 22rpx;
+}
+
+.zoom-icon {
+  align-items: center;
+  background: #e6f2ec;
+  border-radius: 50%;
+  color: #176347;
+  display: flex;
+  flex: 0 0 58rpx;
+  font-size: 32rpx;
+  height: 58rpx;
+  justify-content: center;
+  margin-right: 15rpx;
+  width: 58rpx;
+}
+
+.zoom-title {
+  color: #244138;
+  font-size: 24rpx;
+  font-weight: 800;
+}
+
+.zoom-copy {
+  color: #8b9791;
+  font-size: 19rpx;
+  margin-top: 4rpx;
+}
+
+.map-tips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin: 22rpx 24rpx 0;
+}
+
+.tip-chip {
+  background: #fff7e7;
+  border: 1rpx solid #f0dfbd;
+  border-radius: 999rpx;
+  color: #8c6a2e;
+  font-size: 20rpx;
+  padding: 12rpx 17rpx;
+}

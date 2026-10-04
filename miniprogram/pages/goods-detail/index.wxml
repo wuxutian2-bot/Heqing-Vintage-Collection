@@ -1,42 +1,82 @@
-<view class="page detail-page">
+<view class="detail-page">
   <view wx:if="{{goods}}">
-    <swiper class="image-swiper" indicator-dots circular wx:if="{{goods.images.length}}">
+    <swiper class="image-swiper" indicator-dots indicator-color="rgba(255,255,255,.55)" indicator-active-color="#ffffff" circular wx:if="{{goods.images.length}}">
       <swiper-item wx:for="{{goods.images}}" wx:key="*this">
         <image class="detail-image" mode="aspectFill" src="{{item}}" data-src="{{item}}" bindtap="previewImage"></image>
       </swiper-item>
     </swiper>
     <image wx:else class="detail-image single" mode="aspectFill" src="{{goods.cover}}"></image>
 
-    <view class="card info-card">
+    <view class="info-card">
       <view class="price-row">
-        <text class="detail-price">￥{{goods.priceText}}</text>
+        <text class="detail-price">{{goods.category === '求购' ? '预算 ￥' : '￥'}}{{goods.displayPriceText}}</text>
         <text class="status">{{goods.statusText}}</text>
       </view>
       <view class="detail-title">{{goods.title}}</view>
       <view class="meta-row">
-        <text>{{goods.category}}</text>
+        <text>{{isPlatformGoods ? '平台出售 · ' : ''}}{{goods.category}}</text>
         <text>{{goods.viewCount || 0}} 次浏览</text>
       </view>
     </view>
 
-    <view class="card block-card">
+    <view class="block-card">
       <view class="block-title">商品描述</view>
       <view class="detail-desc">{{goods.desc}}</view>
     </view>
 
-    <view class="card block-card">
-      <view class="block-title">联系方式</view>
-      <view class="contact-row">
-        <text>{{goods.contact}}</text>
-        <button class="copy-btn" bindtap="copyContact">复制</button>
+    <view wx:if="{{isPlatformGoods}}" class="platform-card">
+      <view class="platform-seal">鹏</view>
+      <view class="platform-main">
+        <view class="platform-title">鹏宇优选平台出售</view>
+        <view class="platform-copy">商品已由平台回收并记录验货信息，可通过小程序微信支付下单。</view>
+      </view>
+      <view class="platform-tag">平台保障</view>
+    </view>
+
+    <view wx:else class="seller-card">
+      <image class="seller-avatar" src="{{goods.author.avatarUrl}}"></image>
+      <view class="seller-main">
+        <view class="seller-name">{{goods.author.displayName}}</view>
+        <view class="seller-note">{{c2cCheckoutEnabled ? '支持平台担保付款，线下当面交付' : '平台担保购买暂未开放'}}</view>
       </view>
     </view>
 
+    <view wx:if="{{isPlatformGoods}}" class="trade-guide platform-guide">
+      <view class="guide-head"><view class="guide-icon">✓</view><view>平台商品交易流程</view></view>
+      <view class="guide-copy">下单后由微信支付收款，平台负责商品交付与订单售后。支付结果以服务端微信回调或查单为准。</view>
+      <view class="guide-steps"><text class="guide-step">提交订单</text><view class="guide-line"></view><text class="guide-step">微信支付</text><view class="guide-line"></view><text class="guide-step">平台交付</text></view>
+    </view>
+
+    <view wx:elif="{{c2cCheckoutEnabled}}" class="trade-guide platform-guide">
+      <view class="guide-head"><view class="guide-icon">✓</view><view>平台担保交易流程</view></view>
+      <view class="guide-copy">买家付款后由服务端记录订单；双方线下当面核对实物，买家确认收货后才生成卖方待结算记录。争议期间资金状态会冻结。</view>
+      <view class="guide-steps"><text class="guide-step">平台付款</text><view class="guide-line"></view><text class="guide-step">当面交付</text><view class="guide-line"></view><text class="guide-step">确认收货</text></view>
+    </view>
+
+    <view wx:else class="trade-guide">
+      <view class="guide-head"><view class="guide-icon">!</view><view>交易前请确认</view></view>
+      <view class="guide-copy">当前暂未开放该商品的担保购买，请不要绕过平台付款。发布者仍可申请由平台报价、验收和回收。</view>
+      <view class="guide-steps"><text class="guide-step">等待开放</text><view class="guide-line"></view><text class="guide-step">平台下单</text><view class="guide-line"></view><text class="guide-step">当面交付</text></view>
+    </view>
+
+    <view wx:if="{{isAdmin}}" class="admin-panel">
+      <view>
+        <view class="admin-title">市场内容管理</view>
+        <view class="admin-desc">管理员操作会在云端校验权限并记录处理人。</view>
+      </view>
+      <button class="admin-remove-btn" bindtap="adminRemoveGoods">下架商品</button>
+    </view>
+
     <view class="bottom-actions">
-      <button class="ghost-btn" bindtap="toggleFavorite">{{favorite ? '取消收藏' : '收藏'}}</button>
-      <button class="primary-btn" bindtap="copyContact">联系卖家</button>
+      <button class="action-btn favorite-btn {{favorite ? 'active' : ''}}" bindtap="toggleFavorite">{{favorite ? '已收藏' : '收藏商品'}}</button>
+      <button wx:if="{{isPlatformGoods && platformAvailable}}" class="action-btn buy-btn" loading="{{creatingOrder}}" disabled="{{creatingOrder}}" bindtap="buyPlatformGoods">立即购买</button>
+      <view wx:elif="{{isPlatformGoods}}" class="owner-tip">平台商品暂不可购买</view>
+      <button wx:elif="{{!isOwner && c2cCheckoutEnabled}}" class="action-btn buy-btn" loading="{{creatingOrder}}" disabled="{{creatingOrder}}" bindtap="buyC2CGoods">担保购买</button>
+      <view wx:elif="{{!isOwner}}" class="owner-tip">担保购买暂不可用</view>
+      <button wx:elif="{{canApplyRecovery}}" class="action-btn recovery-btn" loading="{{recovering}}" disabled="{{recovering}}" bindtap="applyRecovery">申请平台回收</button>
+      <view wx:else class="owner-tip">这是你发布的商品</view>
     </view>
   </view>
-  <view wx:elif="{{loading}}" class="empty">加载中...</view>
-  <view wx:else class="empty">商品不存在或已下架</view>
+  <view wx:elif="{{loading}}" class="detail-loading"><view class="loading-block loading-cover"></view><view class="loading-block loading-price"></view><view class="loading-block loading-title"></view></view>
+  <view wx:else class="detail-empty"><view class="detail-empty-mark">空</view><text class="detail-empty-copy">商品不存在或已下架</text></view>
 </view>

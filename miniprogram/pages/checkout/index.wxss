@@ -1,0 +1,19 @@
+.checkout-page { background: #f5f6f7; min-height: 100vh; padding: 20rpx 20rpx 160rpx; }
+.delivery-card, .order-card { background: #fff; border: 1rpx solid #e5e7eb; margin-bottom: 18rpx; padding: 24rpx; }
+.section-title { font-size: 31rpx; font-weight: 750; }
+.address-summary { align-items: center; border-top: 1rpx solid #edf0f2; display: flex; justify-content: space-between; margin-top: 18rpx; padding-top: 18rpx; }
+.building { color: #17211d; font-size: 32rpx; font-weight: 750; }
+.outlet-name { color: #6b7280; font-size: 23rpx; margin-top: 7rpx; }
+.change-address { color: #16784b; font-size: 24rpx; }
+.field-row { align-items: center; border-top: 1rpx solid #edf0f2; display: flex; margin-top: 18rpx; padding-top: 18rpx; }
+.field-label { color: #374151; flex: 0 0 130rpx; font-size: 27rpx; }
+.field-input { flex: 1; font-size: 27rpx; text-align: right; }
+.order-item { align-items: center; border-bottom: 1rpx solid #edf0f2; display: flex; gap: 16rpx; padding: 20rpx 0; }
+.item-image { background: #eef1ef; height: 92rpx; width: 92rpx; }
+.item-title { flex: 1; font-size: 27rpx; }
+.item-number { color: #4b5563; font-size: 24rpx; }
+.amount-row { display: flex; font-size: 26rpx; justify-content: space-between; padding-top: 18rpx; }
+.submit-bar { align-items: center; background: #fff; border-top: 1rpx solid #e5e7eb; bottom: 0; display: flex; justify-content: space-between; left: 0; padding: 16rpx 24rpx calc(16rpx + env(safe-area-inset-bottom)); position: fixed; right: 0; }
+.total-label { color: #4b5563; font-size: 25rpx; margin-right: 12rpx; }
+.total-price { color: #d85a18; font-size: 38rpx; font-weight: 800; }
+.submit-btn { margin: 0; width: 260rpx; }

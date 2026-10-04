@@ -1,0 +1,36 @@
+<view class="checkout-page" wx:if="{{outlet}}">
+  <view class="delivery-card">
+    <view class="section-title">送达信息</view>
+    <view class="address-summary" bindtap="goAddress">
+      <view>
+        <view class="building">{{defaultAddress.displayText}}</view>
+        <view class="outlet-name">{{outlet.name}} · 使用账户默认地址</view>
+      </view>
+      <view class="change-address">修改 ›</view>
+    </view>
+    <view class="field-row">
+      <text class="field-label">手机号</text>
+      <input class="field-input" value="{{phone}}" type="number" maxlength="11" placeholder="仅用于本单配送联系" data-field="phone" bindinput="onInput" />
+    </view>
+    <view class="field-row note-row">
+      <text class="field-label">订单备注</text>
+      <input class="field-input" value="{{note}}" maxlength="120" placeholder="选填，如送达时间" data-field="note" bindinput="onInput" />
+    </view>
+  </view>
+
+  <view class="order-card">
+    <view class="section-title">商品明细</view>
+    <view wx:for="{{cart.items}}" wx:key="productId" class="order-item">
+      <image class="item-image" mode="aspectFill" src="{{item.image}}"></image>
+      <view class="item-title">{{item.title}}</view>
+      <view class="item-number">¥{{item.priceText}} × {{item.quantity}}</view>
+    </view>
+    <view class="amount-row"><text>商品小计</text><text>¥{{itemAmountText}}</text></view>
+    <view class="amount-row"><text>配送费</text><text>¥{{deliveryFeeText}}</text></view>
+  </view>
+
+  <view class="submit-bar">
+    <view><text class="total-label">合计</text><text class="total-price">¥{{totalAmountText}}</text></view>
+    <button class="primary-btn submit-btn" loading="{{submitting}}" disabled="{{submitting || !paymentReady}}" bindtap="submit">{{paymentReady ? '提交订单' : '支付配置中'}}</button>
+  </view>
+</view>

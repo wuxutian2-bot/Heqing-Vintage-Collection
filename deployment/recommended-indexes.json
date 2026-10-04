@@ -1,0 +1,71 @@
+{
+  "users": [
+    { "fields": ["_openid"], "unique": true }
+  ],
+  "outlets": [
+    { "fields": ["schoolId", "isActive"] }
+  ],
+  "store_products": [
+    { "fields": ["outletId", "status", "updatedAt"] },
+    { "fields": ["outletId", "status", "category", "updatedAt"] }
+  ],
+  "orders": [
+    { "fields": ["outTradeNo"], "unique": true },
+    { "fields": ["buyerUserId", "createdAt"] },
+    { "fields": ["status", "createdAt"] },
+    { "fields": ["status", "expiresAt", "stockReleased"] }
+  ],
+  "goods": [
+    { "fields": ["status", "createdAt"] },
+    { "fields": ["status", "category", "createdAt"] },
+    { "fields": ["status", "viewCount"] },
+    { "fields": ["status", "price"] }
+  ],
+  "posts": [
+    { "fields": ["createdAt"] },
+    { "fields": ["viewCount"] },
+    { "fields": ["category", "createdAt"] },
+    { "fields": ["category", "viewCount"] }
+  ],
+  "comments": [
+    { "fields": ["targetType", "targetId", "createdAt"] },
+    { "fields": ["parentId"] }
+  ],
+  "comment_likes": [
+    { "fields": ["_openid", "commentId"], "unique": true }
+  ],
+  "favorites": [
+    { "fields": ["_openid", "targetType", "targetId"], "unique": true },
+    { "fields": ["_openid", "targetType", "createdAt"] }
+  ],
+  "conversations": [
+    { "fields": ["participantIds", "lastMessageAt"] }
+  ],
+  "messages": [
+    { "fields": ["conversationId", "createdAt"] }
+  ],
+  "reports": [
+    { "fields": ["reporterId", "targetUserId", "conversationId", "status"] }
+  ],
+  "market_c2c_orders": [
+    { "fields": ["outTradeNo"], "unique": true },
+    { "fields": ["buyerUserId", "createdAt"] },
+    { "fields": ["sellerUserId", "createdAt"] },
+    { "fields": ["status", "expiresAt"] }
+  ],
+  "market_c2c_ledger": [
+    { "fields": ["orderId"], "unique": true },
+    { "fields": ["sellerUserId", "createdAt"] }
+  ],
+  "market_c2c_disputes": [
+    { "fields": ["orderId"], "unique": true },
+    { "fields": ["status", "createdAt"] }
+  ],
+  "market_c2c_payouts": [
+    { "fields": ["orderId"], "unique": true },
+    { "fields": ["sellerUserId", "status", "createdAt"] }
+  ],
+  "market_c2c_idempotency": [
+    { "fields": ["actorUserId", "action", "createdAt"] }
+  ]
+}

@@ -1,15 +1,34 @@
-<view class="page home-page">
-  <view class="hero market-hero">
-    <view>
-      <view class="hero-title">今天想淘点什么？</view>
-      <view class="hero-subtitle">发布闲置、找教材、逛同校好物</view>
+<view class="market-page">
+  <view class="market-hero">
+    <view class="market-brand-row">
+      <view>
+        <view class="market-eyebrow">PENGYU CAMPUS MARKET</view>
+        <view class="market-title">校园闲置</view>
+      </view>
+      <view class="campus-badge"><text class="campus-dot"></text>同校交易</view>
     </view>
-    <button class="hero-action" bindtap="goPublish">发布</button>
+
+    <view class="search-row">
+      <image class="search-icon" src="/images/forum/search.svg"></image>
+      <input class="search-input" value="{{keyword}}" confirm-type="search" placeholder="搜教材、数码、生活用品" bindinput="onKeywordInput" bindconfirm="onSearch" />
+      <view wx:if="{{keyword}}" class="clear-search" catchtap="clearKeyword">清除</view>
+      <button class="search-btn" bindtap="onSearch">搜索</button>
+    </view>
   </view>
 
-  <view class="search-row card">
-    <input class="search-input" value="{{keyword}}" confirm-type="search" placeholder="搜索商品、教材、数码设备" bindinput="onKeywordInput" bindconfirm="onSearch" />
-    <button class="search-btn" bindtap="onSearch">搜索</button>
+  <view class="trade-notice">
+    <view class="notice-mark">i</view>
+    <view>
+      <view class="notice-title">两种交易方式，认准商品标签</view>
+      <view class="notice-copy">个人商品支持平台担保下单，也可申请平台回收；标有“平台出售”的商品支持小程序下单和微信支付。</view>
+    </view>
+  </view>
+
+  <view class="quick-grid">
+    <view wx:for="{{quickCategories}}" wx:key="category" class="quick-item {{activeCategory === item.category ? 'active' : ''}}" data-category="{{item.category}}" bindtap="onQuickCategoryTap">
+      <image class="quick-icon" mode="aspectFit" src="{{item.icon}}"></image>
+      <view class="quick-label">{{item.label}}</view>
+    </view>
   </view>
 
   <scroll-view class="category-scroll" scroll-x enhanced show-scrollbar="{{false}}">
@@ -18,25 +37,59 @@
     </view>
   </scroll-view>
 
+  <view class="listing-head">
+    <view>
+      <view class="listing-title">{{activeCategory === '全部' ? '逛逛同学们的闲置' : activeCategory}}</view>
+      <view class="listing-subtitle">平台商品可直接下单，个人商品通过平台担保交易</view>
+    </view>
+  </view>
+
+  <scroll-view class="sort-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="sort-row">
+      <view wx:for="{{sorts}}" wx:key="key" class="sort-item {{activeSort === item.key ? 'active' : ''}}" data-sort="{{item.key}}" bindtap="onSortTap">{{item.text}}</view>
+    </view>
+  </scroll-view>
+
   <view class="goods-grid" wx:if="{{goodsList.length}}">
-    <view wx:for="{{goodsList}}" wx:key="_id" class="goods-card card" data-id="{{item._id}}" bindtap="goDetail">
-      <image class="goods-cover" mode="aspectFill" src="{{item.cover}}"></image>
+    <view wx:for="{{goodsList}}" wx:key="_id" class="goods-card" data-id="{{item._id}}" bindtap="goDetail">
+      <view class="cover-wrap">
+        <image class="goods-cover" mode="aspectFill" src="{{item.cover}}"></image>
+        <view class="goods-category">{{item.category}}</view>
+        <view wx:if="{{item.platformOwned}}" class="platform-badge">平台出售</view>
+      </view>
       <view class="goods-body">
         <view class="goods-title">{{item.title}}</view>
-        <view class="goods-meta">
-          <text class="goods-price">￥{{item.priceText}}</text>
-          <text class="goods-category">{{item.category}}</text>
-        </view>
+        <view class="goods-price"><text class="price-prefix">{{item.pricePrefix}}</text>{{item.priceText}}</view>
         <view class="goods-desc">{{item.desc}}</view>
-        <view class="goods-foot">
-          <text>{{item.createdText}}</text>
-          <text>{{item.viewCount || 0}} 次浏览</text>
+        <view wx:if="{{item.platformOwned}}" class="author-row platform-author-row">
+          <view class="platform-author-mark">鹏</view>
+          <text class="author-name">鹏宇优选 · 支持微信支付</text>
+          <text class="view-count">{{item.viewCount || 0}} 浏览</text>
+        </view>
+        <view wx:else class="author-row">
+          <image class="author-avatar" mode="aspectFill" src="{{item.author.avatarUrl}}"></image>
+          <text class="author-name">{{item.author.displayName}}</text>
+          <text class="view-count">{{item.viewCount || 0}} 浏览</text>
         </view>
       </view>
     </view>
   </view>
 
-  <view wx:if="{{!loading && !goodsList.length}}" class="empty">还没有商品，先发布一件闲置吧</view>
-  <view wx:if="{{loading}}" class="empty">加载中...</view>
-  <view wx:if="{{!hasMore && goodsList.length}}" class="list-end">已经到底啦</view>
+  <view wx:if="{{loading && !goodsList.length}}" class="goods-grid skeleton-grid">
+    <view wx:for="{{skeletons}}" wx:key="*this" class="goods-card skeleton-card">
+      <view class="skeleton-cover"></view>
+      <view class="skeleton-body"><view class="skeleton-line line-one"></view><view class="skeleton-line line-two"></view><view class="skeleton-line line-three"></view></view>
+    </view>
+  </view>
+
+  <view wx:if="{{!loading && !goodsList.length}}" class="market-empty">
+    <view class="empty-mark">闲</view>
+    <view class="empty-title">这个分类还没有商品</view>
+    <view class="empty-copy">换个分类看看，或者发布第一件闲置。</view>
+    <button class="empty-action" bindtap="goPublish">发布闲置</button>
+  </view>
+  <view wx:if="{{loading && goodsList.length}}" class="list-end">正在加载更多...</view>
+  <view wx:if="{{!loading && !hasMore && goodsList.length}}" class="list-end"><text class="end-line"></text>没有更多了<text class="end-line"></text></view>
+
+  <button wx:if="{{goodsList.length}}" class="floating-publish" bindtap="goPublish"><text class="floating-plus">＋</text>发布闲置</button>
 </view>

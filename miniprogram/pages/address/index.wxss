@@ -1,0 +1,97 @@
+.address-page {
+  background: #f4f7f5;
+}
+
+.address-hero {
+  background: #173f31;
+  border-radius: 20rpx;
+  color: #fff;
+  padding: 42rpx 34rpx 48rpx;
+}
+
+.address-kicker {
+  color: #a7d7bf;
+  font-size: 24rpx;
+  font-weight: 700;
+  letter-spacing: 4rpx;
+}
+
+.address-title {
+  font-size: 48rpx;
+  font-weight: 800;
+  margin-top: 12rpx;
+}
+
+.address-desc {
+  color: #d4e7dd;
+  font-size: 26rpx;
+  line-height: 1.65;
+  margin-top: 18rpx;
+}
+
+.address-card {
+  background: #fff;
+  border: 1rpx solid #e3e9e6;
+  border-radius: 16rpx;
+  margin-top: 24rpx;
+  padding: 28rpx;
+}
+
+.field-label {
+  color: #65736d;
+  font-size: 24rpx;
+  margin-bottom: 18rpx;
+}
+
+.picker-row {
+  align-items: center;
+  border-top: 1rpx solid #edf0ee;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 24rpx;
+}
+
+.picker-main {
+  color: #17211d;
+  font-size: 38rpx;
+  font-weight: 800;
+}
+
+.picker-help {
+  color: #89938f;
+  font-size: 23rpx;
+  margin-top: 10rpx;
+}
+
+.picker-arrow {
+  color: #16784b;
+  font-size: 52rpx;
+}
+
+.address-notice {
+  align-items: flex-start;
+  color: #66736d;
+  display: flex;
+  font-size: 24rpx;
+  gap: 14rpx;
+  line-height: 1.6;
+  margin: 26rpx 8rpx;
+}
+
+.notice-mark {
+  align-items: center;
+  background: #dceee5;
+  border-radius: 50%;
+  color: #16784b;
+  display: flex;
+  flex: 0 0 34rpx;
+  font-size: 22rpx;
+  font-weight: 800;
+  height: 34rpx;
+  justify-content: center;
+}
+
+.save-btn {
+  margin-top: 30rpx;
+  width: 100%;
+}

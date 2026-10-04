@@ -1,44 +1,40 @@
-# 校园二手集小程序
+# 鹏宇优选微信小程序
 
-这是基于微信小程序原生框架和云开发的二手交易 + 社区论坛项目。
+鹏宇优选是一套基于微信小程序原生框架与云开发的单校校园生活平台。当前版本包含宿舍楼代售点、购物车与订单、微信支付安全适配层、校园闲置市场、校园圈和永久匿名身份。
 
-## 功能
+## 当前功能
 
-- 二手商品列表、搜索、分类筛选和详情
-- 登录后发布商品，支持上传云存储图片
-- 社区帖子列表、发帖、点赞和评论
-- 商品收藏、我的商品、我的帖子、我的收藏
-- 云函数处理登录、商品、帖子、评论和收藏操作
+- 四栏导航：`首页 / 市场 / 校园圈 / 我的`
+- 登录后设置默认宿舍地址（1–16号楼、6层、每层39间），首页自动匹配本楼代售点
+- 首页采用左侧分类、右侧商品列表；支持从商品表为16栋楼幂等初始化27款独立库存
+- 同代售点购物车、结算、事务预占库存、15 分钟超时释放和管理员履约
+- 微信支付前端安全开关，以及服务端金额、付款人和回调幂等校验钩子
+- 二手市场分类、搜索、最新/价格/热度排序、平台担保下单和线下当面交付
+- 校园圈发帖、公开评论、点赞、浏览量与管理员置顶治理
+- 校园圈提供可缩放的校园地图入口，方便查询宿舍、教学楼、食堂和校门位置
+- 唯一站内名称“鹏宇用户+编号”和本地站内头像，不读取微信昵称和微信头像
+- 用户协议、隐私说明及旧数据幂等迁移函数
+- 开发者云端发放管理员权限，支持市场下架、帖子置顶/删除及评论删除
+- 代售点分级管理：`admin` 为代售点总管理员，可从Excel商品库搜索并批量上架到多个代售点，也可创建自定义商品；`outlet_admin` 仅能初始化并管理所绑定代售点的库存与上下架
 
-## 云开发集合
+## 目录
 
-需要在云开发数据库中准备这些集合：
-
-- `users`
-- `goods`
-- `posts`
-- `comments`
-- `favorites`
+- `miniprogram/`：小程序页面、样式和前端工具
+- `cloudfunctions/`：业务云函数
+- `payment-integration/`：合入 CloudBase 自动生成支付函数的业务钩子
+- `deployment/`：数据库权限模板和推荐索引清单
+- `鹏宇优选计划书1.md`：产品与实施计划
+- `鹏宇优选部署与验收.md`：从备份到提审的操作手册
+- `SECURITY_AUDIT.md`：安全审计结果和剩余风险
 
 ## 云函数
 
-需要上传并部署这些云函数：
+应部署：`login`、`store`、`orders`、`goods`、`posts`、`comments`、`favorites`、`maintenance`、`market`、`c2c-market`。此外应将 `chat` 重新部署一次为禁用占位函数，以阻止旧版本继续调用私信接口。
 
-- `login`
-- `goods`
-- `posts`
-- `comments`
-- `favorites`
+旧示例函数 `quickstartFunctions` 不属于当前产品，正式环境不要部署；旧示例页面及配图已移到 `docs/retired-cloudbase-example`，不再进入小程序主包。
 
-`miniprogram/app.js` 中已配置云环境 ID，如需切换环境，修改 `globalData.env`。
+## 启动前须知
 
-## 页面
+代码中的真实微信支付默认关闭。只有在 CloudBase 集成中心生成支付 HTTP 函数、合入 `payment-integration/orderService.js`、验证支付回调后，才可填写 `miniprogram/app.js` 的 `paymentFunctionName` 并将 `paymentBusinessHookReady` 改为 `true`。这样可避免前端金额或未完成回调逻辑进入正式交易。
 
-- `pages/home/index`：二手市场
-- `pages/goods-detail/index`：商品详情
-- `pages/publish-goods/index`：发布商品
-- `pages/forum/index`：社区论坛
-- `pages/post-detail/index`：帖子详情
-- `pages/publish-post/index`：发布帖子
-- `pages/profile/index`：个人中心
-- `pages/login/index`：登录
+完整上线步骤见 [鹏宇优选部署与验收.md](./鹏宇优选部署与验收.md)。

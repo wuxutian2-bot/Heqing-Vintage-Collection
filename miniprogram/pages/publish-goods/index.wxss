@@ -4,6 +4,18 @@
   grid-template-columns: repeat(3, 1fr);
 }
 
+.image-field-title {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.image-required {
+  color: #c4493d;
+  font-size: 22rpx;
+  font-weight: 650;
+}
+
 .image-cell,
 .add-image,
 .upload-image {
@@ -45,4 +57,22 @@
 
 .submit-btn {
   margin-top: 28rpx;
+}
+.publish-note {
+  background: #edf6f1;
+  border-left: 6rpx solid #16784b;
+  margin-bottom: 20rpx;
+  padding: 22rpx;
+}
+
+.note-title {
+  font-size: 30rpx;
+  font-weight: 750;
+}
+
+.note-desc {
+  color: #4b6658;
+  font-size: 24rpx;
+  line-height: 1.5;
+  margin-top: 8rpx;
 }

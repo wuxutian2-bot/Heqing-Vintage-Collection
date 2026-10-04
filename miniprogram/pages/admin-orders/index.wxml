@@ -1,0 +1,33 @@
+<view class="admin-orders">
+  <scroll-view class="status-scroll" scroll-x enhanced show-scrollbar="false">
+    <view class="status-row">
+      <view wx:for="{{tabs}}" wx:key="key" class="status-tab {{activeStatus === item.key ? 'active' : ''}}" data-status="{{item.key}}" bindtap="switchTab">{{item.text}}</view>
+    </view>
+  </scroll-view>
+
+  <view wx:if="{{orders.length}}" class="order-list">
+    <view wx:for="{{orders}}" wx:key="_id" class="order-card">
+      <view class="order-head" data-id="{{item._id}}" bindtap="goDetail">
+        <view>
+          <view class="building">{{item.buildingName}} {{item.delivery.room}}</view>
+          <view class="muted">{{item.outletName}} · {{item.createdText}}</view>
+        </view>
+        <view class="status {{item.status === 'payment_exception' ? 'danger' : ''}}">{{item.statusText}}</view>
+      </view>
+      <view class="summary">{{item.itemSummary}}</view>
+      <view class="delivery-info">联系电话 {{item.delivery.phone}}<text wx:if="{{item.note}}"> · {{item.note}}</text></view>
+      <view wx:if="{{item.status === 'delivering' && (!item.shippingSyncStatus || item.shippingSyncStatus === 'manual_required')}}" class="shipping-warning">需在微信后台录入“其他发货方式”</view>
+      <view wx:if="{{item.status === 'delivering' && (item.shippingSyncStatus === 'manual_recorded' || item.shippingSyncStatus === 'synced')}}" class="shipping-done">微信发货信息已录入</view>
+      <view class="order-foot">
+        <view class="amount">¥{{item.totalAmountText}}</view>
+        <view class="order-actions">
+          <button wx:if="{{item.status === 'paid'}}" class="action-btn" data-id="{{item._id}}" data-status="delivering" bindtap="updateStatus">开始配送</button>
+          <button wx:if="{{item.status === 'delivering' && (!item.shippingSyncStatus || item.shippingSyncStatus === 'manual_required')}}" class="action-btn secondary" data-id="{{item._id}}" bindtap="confirmShipping">已录微信发货</button>
+          <button wx:if="{{item.status === 'delivering' && (item.shippingSyncStatus === 'manual_recorded' || item.shippingSyncStatus === 'synced')}}" class="action-btn" data-id="{{item._id}}" data-status="completed" bindtap="updateStatus">确认送达</button>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view wx:if="{{loading}}" class="empty">正在加载...</view>
+  <view wx:elif="{{!orders.length}}" class="empty">当前没有订单</view>
+</view>

@@ -1,63 +1,235 @@
 <view class="page profile-page">
-  <view wx:if="{{user}}" class="profile-header card">
-    <image class="avatar" src="{{user.avatarUrl || '/images/avatar.png'}}"></image>
-    <view class="profile-main">
-      <view class="nickname">{{user.nickName || '微信用户'}}</view>
-      <view class="muted">管理发布、帖子和收藏</view>
+  <view class="profile-hero">
+    <view class="hero-orb hero-orb-one"></view>
+    <view class="hero-orb hero-orb-two"></view>
+
+    <view class="hero-topline">
+      <view class="brand-lockup">
+        <view class="brand-mark">鹏</view>
+        <view>
+          <view class="brand-name">鹏宇优选</view>
+          <view class="brand-en">CAMPUS LIFE</view>
+        </view>
+      </view>
+      <button wx:if="{{user}}" class="logout-btn" bindtap="logout">退出</button>
     </view>
-    <button class="logout-btn" bindtap="logout">退出</button>
+
+    <view wx:if="{{user}}" class="identity-row">
+      <view class="avatar-wrap" bindtap="openAvatarPicker">
+        <image class="avatar" mode="aspectFill" src="{{user.avatarUrl || '/images/avatars/avatar-1.svg'}}"></image>
+        <view class="avatar-change">换</view>
+      </view>
+      <view class="profile-main">
+        <view class="identity-label">{{isStoreManager ? '运营账号' : '校园用户'}}</view>
+        <view class="nickname">{{user.displayName || '正在生成用户编号'}}</view>
+        <view class="address-chip" bindtap="goAddress">
+          <view class="address-pin"></view>
+          <text>{{user.defaultAddress ? user.defaultAddress.displayText : '设置宿舍地址'}}</text>
+          <text class="chip-arrow">›</text>
+        </view>
+      </view>
+    </view>
+
+    <view wx:else class="guest-panel">
+      <view class="guest-kicker">校园好物与同学动态</view>
+      <view class="guest-title">你的校园生活服务台</view>
+      <view class="guest-desc">登录后查看订单、管理发布内容并保存宿舍地址。</view>
+      <button class="guest-login-btn" bindtap="goLogin">登录鹏宇优选</button>
+    </view>
   </view>
 
-  <view wx:else class="login-card card">
-    <view class="login-title">还未登录</view>
-    <view class="muted">登录后可以查看你的发布和收藏</view>
-    <button class="primary-btn" bindtap="goLogin">去登录</button>
-  </view>
+  <view wx:if="{{user}}" class="profile-content">
+    <view class="summary-card">
+      <view class="summary-item {{activeTab === 'goods' ? 'active' : ''}}" data-key="goods" bindtap="switchTab">
+        <view class="summary-value">{{goods.length}}</view>
+        <view class="summary-label">商品</view>
+      </view>
+      <view class="summary-item {{activeTab === 'posts' ? 'active' : ''}}" data-key="posts" bindtap="switchTab">
+        <view class="summary-value">{{posts.length}}</view>
+        <view class="summary-label">帖子</view>
+      </view>
+      <view class="summary-item {{activeTab === 'favorites' ? 'active' : ''}}" data-key="favorites" bindtap="switchTab">
+        <view class="summary-value">{{favorites.length}}</view>
+        <view class="summary-label">收藏</view>
+      </view>
+    </view>
 
-  <view wx:if="{{user}}">
+    <view class="section-heading">
+      <view>
+        <view class="section-kicker">QUICK ACCESS</view>
+        <view class="section-name">校园服务</view>
+      </view>
+      <view class="section-note">常用功能</view>
+    </view>
+
+    <view class="service-grid">
+      <view class="service-item" bindtap="goAddress">
+        <view class="service-icon"><image mode="aspectFill" src="/images/profile/quick-location.png"></image></view>
+        <view class="service-name">宿舍地址</view>
+        <view class="service-desc">配送位置</view>
+      </view>
+      <view class="service-item" bindtap="goOrders">
+        <view class="service-icon"><image mode="aspectFill" src="/images/profile/quick-order.png"></image></view>
+        <view class="service-name">配送订单</view>
+        <view class="service-desc">配送进度</view>
+      </view>
+      <view class="service-item" bindtap="goC2COrders">
+        <view class="service-icon"><image mode="aspectFill" src="/images/profile/quick-order.png"></image></view>
+        <view class="service-name">担保交易</view>
+        <view class="service-desc">闲置买卖记录</view>
+      </view>
+      <view class="service-item" bindtap="goRecoveries">
+        <view class="service-icon"><image mode="aspectFill" src="/images/profile/quick-rules.png"></image></view>
+        <view class="service-name">我的回收</view>
+        <view class="service-desc">报价与回收款</view>
+      </view>
+      <view class="service-item" bindtap="goLegal">
+        <view class="service-icon"><image mode="aspectFill" src="/images/profile/quick-rules.png"></image></view>
+        <view class="service-name">规则说明</view>
+        <view class="service-desc">协议隐私</view>
+      </view>
+    </view>
+
+    <view wx:if="{{isStoreManager}}" class="management-panel">
+      <view class="management-heading">
+        <view>
+          <view class="management-kicker">OPERATION DESK</view>
+          <view class="management-title">代售点工作台</view>
+        </view>
+        <view class="management-badge">{{managerRoleText}}</view>
+      </view>
+      <view class="management-grid {{isSuperAdmin ? '' : 'single'}}">
+        <view class="management-item" bindtap="goAdminStore">
+          <view class="management-icon"><image src="/images/profile/store.svg"></image></view>
+          <view class="management-copy">
+            <view class="management-name">商品与库存</view>
+            <view class="management-desc">{{isSuperAdmin ? '管理全部代售点' : '管理本点库存'}}</view>
+          </view>
+          <view class="management-arrow">›</view>
+        </view>
+        <view wx:if="{{isSuperAdmin}}" class="management-item" bindtap="goAdminOrders">
+          <view class="management-icon"><image src="/images/profile/dispatch.svg"></image></view>
+          <view class="management-copy">
+            <view class="management-name">订单履约</view>
+            <view class="management-desc">备货、配送与异常</view>
+          </view>
+          <view class="management-arrow">›</view>
+        </view>
+        <view wx:if="{{isSuperAdmin}}" class="management-item" bindtap="goAdminMarketRecovery">
+          <view class="management-icon"><image src="/images/profile/store.svg"></image></view>
+          <view class="management-copy">
+            <view class="management-name">市场回收</view>
+            <view class="management-desc">报价、验货与确认收购</view>
+          </view>
+          <view class="management-arrow">›</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="section-heading content-heading">
+      <view>
+        <view class="section-kicker">MY ACTIVITY</view>
+        <view class="section-name">我的内容</view>
+      </view>
+    </view>
+
     <view class="tab-row">
       <view wx:for="{{tabs}}" wx:key="key" class="tab-item {{activeTab === item.key ? 'active' : ''}}" data-key="{{item.key}}" bindtap="switchTab">{{item.text}}</view>
     </view>
 
-    <view wx:if="{{activeTab === 'goods'}}">
+    <view wx:if="{{loading}}" class="skeleton-list">
+      <view class="skeleton-card"><view class="skeleton-cover"></view><view class="skeleton-copy"><view></view><view></view><view></view></view></view>
+      <view class="skeleton-card"><view class="skeleton-cover"></view><view class="skeleton-copy"><view></view><view></view><view></view></view></view>
+    </view>
+
+    <block wx:elif="{{activeTab === 'goods'}}">
       <view wx:if="{{goods.length}}" class="item-list">
-        <view wx:for="{{goods}}" wx:key="_id" class="mine-card card">
+        <view wx:for="{{goods}}" wx:key="_id" class="mine-card">
           <image class="mine-cover" mode="aspectFill" src="{{item.cover}}" data-id="{{item._id}}" bindtap="goGoodsDetail"></image>
           <view class="mine-main">
+            <view class="item-type">MARKET ITEM</view>
             <view class="mine-title" data-id="{{item._id}}" bindtap="goGoodsDetail">{{item.title}}</view>
-            <view class="mine-meta">￥{{item.priceText}} · {{item.statusText}}</view>
+            <view class="mine-meta"><text class="price">￥{{item.priceText}}</text><text class="status-dot">·</text>{{item.statusText}}</view>
             <view class="mine-actions">
               <button class="mini-btn" data-id="{{item._id}}" bindtap="markSold">标记已售</button>
-              <button class="mini-btn danger" data-id="{{item._id}}" bindtap="removeGoods">下架</button>
+              <button class="mini-btn danger" data-id="{{item._id}}" bindtap="removeGoods">删除</button>
             </view>
           </view>
         </view>
       </view>
-      <view wx:else class="empty">还没有发布商品</view>
-    </view>
-
-    <view wx:if="{{activeTab === 'posts'}}">
-      <view wx:if="{{posts.length}}" class="item-list">
-        <view wx:for="{{posts}}" wx:key="_id" class="post-card card" data-id="{{item._id}}" bindtap="goPostDetail">
-          <view class="mine-title">{{item.title}}</view>
-          <view class="post-content">{{item.content}}</view>
-          <view class="mine-meta">{{item.createdText}} · {{item.commentCount || 0}} 评论</view>
-        </view>
+      <view wx:else class="empty-panel">
+        <view class="empty-mark">物</view>
+        <view class="empty-title">还没有发布商品</view>
+        <view class="empty-desc">闲置好物也许正被同学需要</view>
+        <button class="empty-action" bindtap="goPublishGoods">发布第一件商品</button>
       </view>
-      <view wx:else class="empty">还没有发布帖子</view>
-    </view>
+    </block>
 
-    <view wx:if="{{activeTab === 'favorites'}}">
-      <view wx:if="{{favorites.length}}" class="item-list">
-        <view wx:for="{{favorites}}" wx:key="_id" class="mine-card card" data-id="{{item._id}}" bindtap="goGoodsDetail">
-          <image class="mine-cover" mode="aspectFill" src="{{item.cover}}"></image>
-          <view class="mine-main">
+    <block wx:elif="{{activeTab === 'posts'}}">
+      <view wx:if="{{posts.length}}" class="item-list">
+        <view wx:for="{{posts}}" wx:key="_id" class="post-card">
+          <view data-id="{{item._id}}" bindtap="goPostDetail">
+            <view class="item-type">CAMPUS STORY</view>
             <view class="mine-title">{{item.title}}</view>
-            <view class="mine-meta">￥{{item.priceText}} · {{item.category}}</view>
+            <view class="post-content">{{item.content}}</view>
+            <view class="mine-meta">{{item.createdText}}<text class="status-dot">·</text>{{item.commentCount || 0}} 评论</view>
+          </view>
+          <view class="post-actions">
+            <button class="mini-btn danger" data-id="{{item._id}}" bindtap="removePost">删除</button>
           </view>
         </view>
       </view>
-      <view wx:else class="empty">还没有收藏商品</view>
+      <view wx:else class="empty-panel">
+        <view class="empty-mark">聊</view>
+        <view class="empty-title">还没有发布帖子</view>
+        <view class="empty-desc">记录校园里的新鲜事</view>
+        <button class="empty-action" bindtap="goPublishPost">发布第一篇帖子</button>
+      </view>
+    </block>
+
+    <block wx:elif="{{activeTab === 'favorites'}}">
+      <view wx:if="{{favorites.length}}" class="item-list">
+        <view wx:for="{{favorites}}" wx:key="_id" class="mine-card" data-id="{{item._id}}" bindtap="goGoodsDetail">
+          <image class="mine-cover" mode="aspectFill" src="{{item.cover}}"></image>
+          <view class="mine-main">
+            <view class="item-type">SAVED ITEM</view>
+            <view class="mine-title">{{item.title}}</view>
+            <view class="mine-meta"><text class="price">￥{{item.priceText}}</text><text class="status-dot">·</text>{{item.category}}</view>
+          </view>
+        </view>
+      </view>
+      <view wx:else class="empty-panel">
+        <view class="empty-mark">藏</view>
+        <view class="empty-title">还没有收藏商品</view>
+        <view class="empty-desc">逛逛市场，收下你的心仪好物</view>
+        <button class="empty-action" bindtap="goMarket">去市场看看</button>
+      </view>
+    </block>
+  </view>
+
+  <view wx:if="{{avatarPickerVisible}}" class="avatar-picker-mask" catchtap="closeAvatarPicker">
+    <view class="avatar-picker-sheet" catchtap="keepAvatarPickerOpen">
+      <view class="avatar-picker-head">
+        <view>
+          <view class="avatar-picker-kicker">SYSTEM AVATARS</view>
+          <view class="avatar-picker-title">选择你的头像</view>
+        </view>
+        <view class="avatar-picker-close" catchtap="closeAvatarPicker">×</view>
+      </view>
+      <view class="avatar-picker-tip">选择后会绑定到当前账户，下次登录继续使用。</view>
+
+      <scroll-view class="avatar-picker-scroll" scroll-y enhanced show-scrollbar="{{false}}">
+        <view wx:if="{{avatarOptions.length}}" class="avatar-picker-grid">
+          <view wx:for="{{avatarOptions}}" wx:key="id" class="avatar-option {{user.avatarId === item.id ? 'selected' : ''}} {{avatarSavingId === item.id ? 'saving' : ''}}" data-id="{{item.id}}" catchtap="selectAvatar">
+            <image class="avatar-option-image" mode="aspectFill" lazy-load src="{{item.avatarUrl}}"></image>
+            <view wx:if="{{user.avatarId === item.id}}" class="avatar-selected-mark">✓</view>
+          </view>
+        </view>
+        <view wx:if="{{avatarLoading && !avatarOptions.length}}" class="avatar-picker-state">正在准备头像库...</view>
+        <view wx:if="{{!avatarLoading && !avatarOptions.length}}" class="avatar-picker-state">{{avatarError || '头像暂时无法加载'}}</view>
+        <button wx:if="{{avatarHasMore && avatarOptions.length}}" class="avatar-load-more" loading="{{avatarLoading}}" disabled="{{avatarLoading}}" bindtap="loadMoreAvatars">{{avatarLoading ? '加载中' : '查看更多头像'}}</button>
+        <view wx:if="{{!avatarHasMore && avatarOptions.length}}" class="avatar-list-end">已展示全部头像</view>
+      </scroll-view>
     </view>
   </view>
 </view>

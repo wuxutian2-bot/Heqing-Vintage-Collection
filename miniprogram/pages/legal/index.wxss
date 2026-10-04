@@ -1,0 +1,48 @@
+.legal-page {
+  padding-bottom: 48rpx;
+}
+
+.legal-header {
+  padding: 18rpx 0 30rpx;
+}
+
+.legal-title {
+  color: #1c1c1e;
+  font-size: 42rpx;
+  font-weight: 800;
+}
+
+.legal-date {
+  color: #7b8794;
+  font-size: 24rpx;
+  margin-top: 10rpx;
+}
+
+.legal-notice {
+  background: #edf7f2;
+  border-left: 6rpx solid #16784b;
+  border-radius: 10rpx;
+  color: #49645a;
+  font-size: 25rpx;
+  line-height: 1.7;
+  margin-bottom: 34rpx;
+  padding: 22rpx 24rpx;
+}
+
+.legal-section {
+  border-bottom: 1rpx solid #e5e7eb;
+  padding: 26rpx 0;
+}
+
+.section-title {
+  color: #1c1c1e;
+  font-size: 30rpx;
+  font-weight: 700;
+  margin-bottom: 14rpx;
+}
+
+.section-content {
+  color: #53615c;
+  font-size: 27rpx;
+  line-height: 1.85;
+}

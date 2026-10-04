@@ -1,0 +1,39 @@
+<view class="detail-page" wx:if="{{order}}">
+  <view class="status-card">
+    <view class="status-title">{{order.title}}</view>
+    <view class="status-desc">{{order.desc}}</view>
+    <view wx:if="{{order.status === 'pending_payment'}}" class="expire">支付截止：{{order.expiresText}}</view>
+  </view>
+
+  <view class="info-card">
+    <view class="section-title">送达信息</view>
+    <view class="primary-info">{{order.delivery.buildingName}} {{order.delivery.room}}</view>
+    <view class="muted">联系电话 {{order.delivery.phone}}</view>
+    <view wx:if="{{order.note}}" class="muted">备注：{{order.note}}</view>
+  </view>
+
+  <view class="info-card">
+    <view class="section-title">商品明细</view>
+    <view wx:for="{{order.items}}" wx:key="productId" class="order-item">
+      <image class="item-image" mode="aspectFill" src="{{item.image}}"></image>
+      <view class="item-title">{{item.title}}</view>
+      <view class="item-price">¥{{item.priceText}} × {{item.quantity}}</view>
+    </view>
+    <view class="amount-row"><text>商品小计</text><text>¥{{order.itemAmountText}}</text></view>
+    <view class="amount-row"><text>配送费</text><text>¥{{order.deliveryFeeText}}</text></view>
+    <view class="amount-row total"><text>合计</text><text>¥{{order.totalAmountText}}</text></view>
+  </view>
+
+  <view class="info-card order-meta">
+    <view>订单编号：{{order.orderNo}}</view>
+    <view>下单时间：{{order.createdText}}</view>
+  </view>
+
+  <view class="bottom-actions">
+    <button wx:if="{{order.status === 'pending_payment'}}" class="ghost-btn" bindtap="cancelOrder">取消订单</button>
+    <button wx:if="{{order.status === 'pending_payment'}}" class="primary-btn" loading="{{paying}}" disabled="{{paying || !paymentReady}}" bindtap="payOrder">{{paymentReady ? '微信支付' : '支付配置中'}}</button>
+    <button wx:else class="primary-btn full-btn" bindtap="goOrders">查看全部订单</button>
+  </view>
+</view>
+<view wx:elif="{{loading}}" class="empty">正在加载订单...</view>
+<view wx:else class="empty">订单不存在</view>

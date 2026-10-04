@@ -1,0 +1,57 @@
+<view class="admin-page">
+  <view class="admin-hero">
+    <view class="hero-kicker">MARKET RECOVERY</view>
+    <view class="hero-title">回收工作台</view>
+    <view class="hero-copy">报价、实物验收和确认收购分步完成，避免在未收到商品时产生应付款。</view>
+  </view>
+
+  <view class="risk-note">
+    <view class="risk-mark">!</view>
+    <view><view class="risk-title">确认收购会立即产生回收应付款</view><view class="risk-copy">必须先收到实物、完成验货，并确认用户接受最终报价。商品后续是否售出不影响该应付款。</view></view>
+  </view>
+
+  <scroll-view class="status-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="status-row">
+      <view wx:for="{{tabs}}" wx:key="key" class="status-tab {{activeStatus === item.key ? 'active' : ''}}" data-status="{{item.key}}" bindtap="switchTab">{{item.text}}</view>
+    </view>
+  </scroll-view>
+
+  <view wx:if="{{recoveries.length}}" class="recovery-list">
+    <view wx:for="{{recoveries}}" wx:key="_id" class="recovery-card">
+      <view class="card-head">
+        <image class="goods-cover" mode="aspectFill" src="{{item.cover}}"></image>
+        <view class="goods-main">
+          <view class="goods-title">{{item.title}}</view>
+          <view class="owner-text">{{item.ownerText}} · {{item.createdText}}</view>
+        </view>
+        <view class="status-pill">{{item.statusText}}</view>
+      </view>
+      <view class="goods-desc">{{item.desc}}</view>
+      <view class="status-tip">{{item.statusTip}}</view>
+
+      <view wx:if="{{item.canQuote || item.canInspect}}" class="form-panel">
+        <view class="field-row">
+          <view class="field-box"><view class="field-label">回收价（元）</view><input class="money-input" type="digit" value="{{item.quoteYuan}}" placeholder="例如 80.00" data-index="{{index}}" data-field="quoteYuan" bindinput="onDraftInput" /></view>
+          <view class="field-box"><view class="field-label">平台销售价（元）</view><input class="money-input" type="digit" value="{{item.salePriceYuan}}" placeholder="例如 99.00" data-index="{{index}}" data-field="salePriceYuan" bindinput="onDraftInput" /></view>
+        </view>
+        <view wx:if="{{item.canInspect}}" class="field-box full-field"><view class="field-label">验货成色与配件</view><input class="text-input" value="{{item.conditionInput}}" maxlength="200" placeholder="例如：九成新，充电器齐全，边框轻微划痕" data-index="{{index}}" data-field="conditionInput" bindinput="onDraftInput" /></view>
+      </view>
+
+      <view wx:if="{{item.quote}}" class="quote-summary">
+        <view><text>用户可得</text><text class="quote-value">¥{{item.quoteNetText}}</text></view>
+        <view><text>平台销售价</text><text class="quote-value">¥{{item.salePriceText}}</text></view>
+        <view><text>报价版本</text><text class="quote-value">V{{item.quote.version}}</text></view>
+      </view>
+
+      <button wx:if="{{item.canQuote}}" class="action-btn primary" data-index="{{index}}" loading="{{processingId === item._id}}" disabled="{{!!processingId}}" bindtap="saveQuote">{{item.status === 'quoted' ? '更新报价' : '提交报价'}}</button>
+      <view wx:if="{{item.canInspect}}" class="action-row">
+        <button class="action-btn secondary" data-index="{{index}}" disabled="{{!!processingId}}" bindtap="inspectReprice">验货需改价</button>
+        <button class="action-btn primary" data-index="{{index}}" loading="{{processingId === item._id}}" disabled="{{!!processingId}}" bindtap="inspectPassed">验货通过</button>
+      </view>
+      <button wx:if="{{item.canConfirm}}" class="action-btn danger" data-index="{{index}}" loading="{{processingId === item._id}}" disabled="{{!!processingId}}" bindtap="confirmAcquisition">确认收购并上架</button>
+    </view>
+  </view>
+
+  <view wx:if="{{loading && !recoveries.length}}" class="empty">正在加载回收申请...</view>
+  <view wx:elif="{{!loading && !recoveries.length}}" class="empty">当前状态没有回收申请</view>
+</view>

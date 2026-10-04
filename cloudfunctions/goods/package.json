@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "ISC",
+  "scripts": {
+    "test": "node --test tests/*.test.js"
+  },
   "dependencies": {
-    "wx-server-sdk": "~2.4.0"
+    "wx-server-sdk": "latest"
   }
 }

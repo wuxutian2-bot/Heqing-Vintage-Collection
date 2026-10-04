@@ -1,0 +1,139 @@
+<view class="admin-page">
+  <view wx:if="{{isSuperAdmin}}" class="admin-tabs">
+    <view class="admin-tab {{mode === 'outlets' ? 'active' : ''}}" data-mode="outlets" bindtap="switchMode">代售点</view>
+    <view class="admin-tab {{mode === 'products' ? 'active' : ''}}" data-mode="products" bindtap="switchMode">商品与库存</view>
+  </view>
+  <view wx:else class="manager-scope-bar">
+    <view>
+      <view class="manager-scope-kicker">MANAGEMENT SCOPE</view>
+      <view class="manager-scope-title">{{productOutletLabel}}</view>
+    </view>
+    <view class="manager-scope-badge">本代售点</view>
+  </view>
+
+  <view wx:if="{{setupRequired}}" class="setup-warning">请先在云开发数据库创建 outlets 和 store_products 集合，再保存第一条数据。</view>
+
+  <view class="bootstrap-card">
+    <view>
+      <view class="bootstrap-title">商品表一键初始化</view>
+      <view class="bootstrap-desc">{{isSuperAdmin ? '初始化全部楼栋缺失商品；重复执行不重置库存' : '只补齐本代售点缺失商品；不重置现有库存'}}</view>
+      <view wx:if="{{bootstrapProgress}}" class="bootstrap-progress">{{bootstrapProgress}}</view>
+    </view>
+    <button class="bootstrap-btn" loading="{{bootstrapLoading}}" disabled="{{bootstrapLoading}}" bindtap="bootstrapCatalog">初始化</button>
+  </view>
+
+  <view wx:if="{{isSuperAdmin && mode === 'outlets'}}" class="admin-content">
+    <view class="form-title">{{outletForm.id ? '编辑代售点' : '新增代售点'}}</view>
+    <view class="form-card">
+      <view class="form-field"><text class="label">楼栋编号（1-16）</text><input type="number" value="{{outletForm.buildingNo}}" placeholder="例如 1" data-field="buildingNo" bindinput="onOutletInput" /></view>
+      <view class="form-field"><text class="label">代售点名称</text><input value="{{outletForm.name}}" placeholder="例如 1 号楼鹏宇代售点" data-field="name" bindinput="onOutletInput" /></view>
+      <view class="form-field row-field"><view><text class="label">配送费（元）</text><input type="digit" value="{{outletForm.deliveryFeeYuan}}" data-field="deliveryFeeYuan" bindinput="onOutletInput" /></view><view><text class="label">起送金额（元）</text><input type="digit" value="{{outletForm.minimumOrderYuan}}" data-field="minimumOrderYuan" bindinput="onOutletInput" /></view></view>
+      <view class="form-field"><text class="label">营业时间</text><input value="{{outletForm.businessHours}}" placeholder="例如 18:00-23:30" data-field="businessHours" bindinput="onOutletInput" /></view>
+      <view class="form-field"><text class="label">公告</text><textarea value="{{outletForm.notice}}" placeholder="配送范围或临时公告" data-field="notice" bindinput="onOutletInput"></textarea></view>
+      <view class="form-actions"><button class="secondary-btn" bindtap="resetOutletForm">清空</button><button class="primary-btn compact" bindtap="submitOutlet">保存代售点</button></view>
+    </view>
+
+    <view class="list-title">全部代售点</view>
+    <view wx:for="{{outlets}}" wx:key="_id" class="manage-item" data-id="{{item._id}}" bindtap="editOutlet">
+      <view class="manage-main"><view class="manage-name">{{item.buildingName}} · {{item.name}}</view><view class="manage-meta">配送 ¥{{item.deliveryFeeText}} · 起送 ¥{{item.minimumOrderText}} · {{item.isActive ? '营业中' : '已停用'}}</view></view>
+      <button class="mini-action" data-id="{{item._id}}" catchtap="toggleOutlet">{{item.isActive ? '停用' : '启用'}}</button>
+    </view>
+    <view wx:if="{{!loading && !outlets.length}}" class="empty">还没有代售点</view>
+  </view>
+
+  <view wx:if="{{mode === 'products'}}" class="admin-content">
+    <block wx:if="{{isSuperAdmin}}">
+      <view class="form-title">{{productForm.id ? '编辑商品' : '新增商品'}}</view>
+      <view class="form-card">
+        <view wx:if="{{!productForm.id}}" class="create-mode-tabs">
+          <view class="create-mode-tab {{productCreateMode === 'catalog' ? 'active' : ''}}" data-mode="catalog" bindtap="switchProductCreateMode">从商品库上架</view>
+          <view class="create-mode-tab {{productCreateMode === 'custom' ? 'active' : ''}}" data-mode="custom" bindtap="switchProductCreateMode">创建新商品</view>
+        </view>
+
+        <view wx:if="{{productForm.id}}" class="fixed-outlet-field">
+          <text class="label">所属代售点</text>
+          <text class="fixed-outlet-value">{{productOutletLabel}}</text>
+        </view>
+        <view wx:else class="outlet-selector">
+          <view class="selector-heading">
+            <view><text class="label">适用代售点</text><text class="selector-count">已选 {{selectedOutletCount}} 个</text></view>
+            <view class="selector-tools"><text bindtap="selectAllProductOutlets">全选</text><text bindtap="clearProductOutlets">清空</text></view>
+          </view>
+          <scroll-view class="outlet-chip-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+            <view class="outlet-chip-row">
+              <view wx:for="{{productOutletOptions}}" wx:key="_id" class="outlet-chip {{item.selected ? 'selected' : ''}}" data-id="{{item._id}}" bindtap="toggleProductOutlet">{{item.buildingName}} · {{item.name}}</view>
+            </view>
+          </scroll-view>
+        </view>
+
+        <picker wx:if="{{productCreateMode === 'custom' || !productForm.id}}" mode="selector" range="{{categories}}" bindchange="onCategoryChange">
+          <view class="picker-field"><text class="label">商品分类</text><text>{{productForm.category}} ›</text></view>
+        </picker>
+        <view wx:else class="fixed-outlet-field"><text class="label">商品分类</text><text class="fixed-outlet-value">{{productForm.category}}</text></view>
+
+        <block wx:if="{{productCreateMode === 'catalog'}}">
+          <view class="form-field catalog-search-field">
+            <text class="label">商品名称</text>
+            <input value="{{catalogKeyword}}" disabled="{{productForm.id}}" placeholder="输入“南京”查找南京板鸭" bindinput="onCatalogKeywordInput" />
+          </view>
+          <scroll-view wx:if="{{!productForm.id}}" class="catalog-results" scroll-y enhanced show-scrollbar="{{false}}">
+            <view wx:for="{{catalogMatches}}" wx:key="sku" class="catalog-result {{productForm.sku === item.sku ? 'selected' : ''}}" data-sku="{{item.sku}}" bindtap="selectCatalogProduct">
+              <image class="catalog-result-image" mode="aspectFill" src="{{item.image}}"></image>
+              <view class="catalog-result-copy"><view class="catalog-result-title">{{item.title}}</view><view class="catalog-result-meta">{{item.category}} · 默认 ¥{{item.priceText}}</view></view>
+              <text class="catalog-result-check">{{productForm.sku === item.sku ? '已选' : '选择'}}</text>
+            </view>
+            <view wx:if="{{!catalogMatches.length}}" class="catalog-empty">当前分类没有匹配商品，请更换关键字或分类</view>
+          </scroll-view>
+          <view wx:if="{{productForm.title}}" class="selected-product-card"><text>已选商品</text><text class="selected-product-name">{{productForm.title}}</text></view>
+        </block>
+        <view wx:else class="form-field">
+          <text class="label">商品名称</text>
+          <input value="{{productForm.title}}" placeholder="填写商品库以外的新商品名称" data-field="title" bindinput="onProductInput" />
+        </view>
+
+        <view class="form-field row-field"><view><text class="label">价格（元）</text><input type="digit" value="{{productForm.priceYuan}}" placeholder="选择商品后自动带出" data-field="priceYuan" bindinput="onProductInput" /></view><view><text class="label">初始库存</text><input type="number" value="{{productForm.stock}}" data-field="stock" bindinput="onProductInput" /></view></view>
+        <view wx:if="{{productCreateMode === 'catalog'}}" class="price-hint">默认采用Excel售价，总管理员仍可按实际进货情况调整。</view>
+        <view class="form-field"><text class="label">商品说明</text><textarea value="{{productForm.desc}}" placeholder="规格、口味等" data-field="desc" bindinput="onProductInput"></textarea></view>
+        <view class="image-editor" bindtap="chooseProductImage">
+          <image class="form-image" mode="aspectFill" src="{{productImagePreview}}"></image>
+          <view class="image-editor-copy"><view class="image-editor-title">{{uploading ? '图片上传中…' : '商品图片（选填）'}}</view><view class="image-editor-hint">{{productImageHint}}</view><view class="image-editor-action">点击更换图片</view></view>
+        </view>
+        <view class="form-actions"><button class="secondary-btn" bindtap="resetProductForm">{{productForm.id ? '取消编辑' : '清空'}}</button><button class="primary-btn compact" disabled="{{uploading}}" bindtap="submitProduct">{{productForm.id ? '保存商品' : (selectedOutletCount > 1 ? '批量上架' : '上架商品')}}</button></view>
+        <view wx:if="{{productForm.id}}" class="group-image-action">
+          <view class="group-image-note">统一更换只同步商品图片，不会改动各代售点的价格、库存和上下架状态。</view>
+          <button class="batch-image-btn" loading="{{batchUpdatingImage}}" disabled="{{uploading || batchUpdatingImage || !productForm.image}}" bindtap="applyImageToAllOutlets">统一更换全部代售点图片</button>
+        </view>
+      </view>
+    </block>
+
+    <block wx:else>
+      <view class="outlet-admin-tip">
+        <view class="outlet-admin-tip-title">你的权限范围</view>
+        <view class="outlet-admin-tip-desc">只能调整本代售点商品库存和上下架状态。点击下方商品可修改数量。</view>
+      </view>
+      <view wx:if="{{productForm.id}}" class="stock-editor">
+        <view class="stock-editor-title">调整商品数量</view>
+        <view class="stock-product-row">
+          <image class="stock-product-image" mode="aspectFill" src="{{productForm.image || '/images/default-goods-image.png'}}"></image>
+          <view class="stock-product-copy">
+            <view class="stock-product-name">{{productForm.title}}</view>
+            <view class="stock-product-meta">{{productForm.category}} · ¥{{productForm.priceYuan}}</view>
+          </view>
+        </view>
+        <view class="form-field"><text class="label">当前库存数量</text><input type="number" value="{{productForm.stock}}" data-field="stock" bindinput="onProductInput" /></view>
+        <view class="form-actions"><button class="secondary-btn" bindtap="resetProductForm">取消</button><button class="primary-btn compact" bindtap="submitProduct">保存库存</button></view>
+      </view>
+    </block>
+
+    <view class="product-list-heading">
+      <view class="list-title">当前代售点商品</view>
+      <picker wx:if="{{isSuperAdmin}}" mode="selector" range="{{outletNames}}" bindchange="onProductOutletChange"><view class="list-outlet-picker">{{productOutletLabel}} ›</view></picker>
+    </view>
+    <view wx:for="{{products}}" wx:key="_id" class="manage-item product-item" data-id="{{item._id}}" bindtap="editProduct">
+      <image class="thumb" mode="aspectFill" src="{{item.image}}"></image>
+      <view class="manage-main"><view class="manage-name">{{item.title}}</view><view class="manage-meta">¥{{item.priceText}} · 库存 {{item.stock}} · {{item.status === 'on_sale' ? '上架中' : '已下架'}}</view></view>
+      <button class="mini-action" data-id="{{item._id}}" catchtap="toggleProduct">{{item.status === 'on_sale' ? '下架' : '上架'}}</button>
+    </view>
+    <view wx:if="{{!loading && !products.length}}" class="empty">当前代售点还没有商品</view>
+  </view>
+</view>

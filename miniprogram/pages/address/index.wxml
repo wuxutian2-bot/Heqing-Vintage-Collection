@@ -1,0 +1,33 @@
+<view class="page address-page">
+  <view class="address-hero">
+    <view class="address-kicker">送货上门</view>
+    <view class="address-title">确认你的宿舍</view>
+    <view class="address-desc">地址会保存在账户中，结算时自动使用。每栋楼的商品库存相互独立。</view>
+  </view>
+
+  <view class="address-card">
+    <view class="field-label">默认配送地址</view>
+    <picker
+      mode="multiSelector"
+      range="{{ranges}}"
+      value="{{value}}"
+      bindcolumnchange="onColumnChange"
+      bindchange="onAddressChange"
+    >
+      <view class="picker-row">
+        <view>
+          <view class="picker-main">{{addressText}}</view>
+          <view class="picker-help">1–16号楼 · 每栋6层 · 每层39间</view>
+        </view>
+        <view class="picker-arrow">›</view>
+      </view>
+    </picker>
+  </view>
+
+  <view class="address-notice">
+    <view class="notice-mark">i</view>
+    <view>请确认楼栋和宿舍号准确无误。修改楼栋会切换代售点，并清空原楼栋购物车。</view>
+  </view>
+
+  <button class="primary-btn save-btn" loading="{{loading}}" disabled="{{loading}}" bindtap="saveAddress">确认并保存</button>
+</view>

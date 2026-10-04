@@ -1,0 +1,97 @@
+{
+  "document_type": "manual_readiness_record_not_runtime_config",
+  "updated_on": "2026-09-05",
+  "purpose": "只记录非秘密配置及核对状态；null 表示待核实；不被应用自动加载",
+  "known_identifiers": {
+    "merchantId": "your-merchant-id",
+    "appId": "wx-your-appid",
+    "transfer_scene_id": "1010",
+    "client_cloud_environment": "your-cloud-env-id",
+    "client_http_function_name": "pengyu-pay-fj7pei2f-demo-scfweb"
+  },
+  "merchant_product": {
+    "formally_enabled": null,
+    "scene_1010_approved": null,
+    "api_initiation_enabled": null,
+    "verified_on": null,
+    "approved_limits_in_fen": {
+      "minimum_per_transfer": null,
+      "maximum_per_transfer": null,
+      "maximum_per_recipient_per_day": null,
+      "maximum_per_merchant_per_day": null,
+      "maximum_per_merchant_per_month": null
+    }
+  },
+  "actual_cloud_resource": {
+    "runtime_type": null,
+    "environment_id": null,
+    "function_or_service_name": null,
+    "deployed_revision": null,
+    "vpc_enabled": null,
+    "fixed_public_egress_ips": [],
+    "egress_source_description": null,
+    "verified_on": null,
+    "wechat_interface_ip_list_matches": null,
+    "deployment_manifest_matches_resource": null
+  },
+  "notification_configuration": {
+    "existing_signMode": null,
+    "verified_pay_notify_url": null,
+    "verified_refund_notify_url": null,
+    "verified_transfer_notify_url": null,
+    "known_internal_routes": {
+      "payment": "/wx-pay/unifiedOrderTrigger",
+      "refund": "/wx-pay/refundTrigger",
+      "transfer": "/wx-pay/transferTrigger"
+    },
+    "transfer_notification_authentication_verified": null
+  },
+  "server_credential_checks_no_secret_values": {
+    "appId_matches": null,
+    "merchantId_matches": null,
+    "appid_mchid_binding_verified": null,
+    "recipient_openid_appid_binding_verified": null,
+    "merchantSerialNumber_and_privateKey_match": null,
+    "apiV3Key_configured": null,
+    "wechat_public_key_pair_or_certificate_verifier_ready": null,
+    "transfer_response_signature_verification_ready": false
+  },
+  "operating_account_readiness": {
+    "account_enabled": null,
+    "funding_permissions_verified": null,
+    "funding_responsible_person_assigned": null,
+    "available_funds_checked": null,
+    "sufficient_for_initial_payables": null,
+    "verified_on": null,
+    "low_balance_alerts_ready": false
+  },
+  "initial_release_code_limits": {
+    "encrypted_recipient_name_supported": false,
+    "transfer_amount_ceiling_exclusive_fen": 200000,
+    "lower_approved_limits_still_apply": true,
+    "limit_guard_verified_at_all_business_stages": false
+  },
+  "business_rules_to_finalize": {
+    "fee_enabled": false,
+    "fee_rule_version": null,
+    "payment_deadline_terms": null,
+    "limit_rule_version": null,
+    "business_rules_approved": null
+  },
+  "implementation_status": {
+    "recovery_and_acceptance_complete": false,
+    "platform_inventory_and_sales_complete": false,
+    "payable_ledger_and_claims_complete": false,
+    "trusted_identity_boundary_verified": false,
+    "deduplication_and_reconciliation_complete": false,
+    "merchant_transfer_confirmation_ui_complete": false,
+    "existing_store_payment_regression_passed_for_new_business": false,
+    "production_transfer_enabled": false
+  },
+  "notes": [
+    "接口 IP 填实际支付后端固定公网出口；本模板没有已核实的实际 IP。",
+    "申请预览额度不自动视为正式获批额度，金额统一记录整数分。",
+    "凭据本体只进入服务端受保护配置，不填入本文件。",
+    "业务与实现开关仅为规划记录，不代表已设置云端环境或应用开关。"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "openapi": []
+  },
+  "triggers": [
+    {
+      "name": "expire-market-sale-orders",
+      "type": "timer",
+      "config": "0 */5 * * * * *"
+    }
+  ]
+}

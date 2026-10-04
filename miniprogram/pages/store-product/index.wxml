@@ -1,0 +1,27 @@
+<view class="product-page">
+  <view wx:if="{{product}}">
+    <image class="hero-image" mode="aspectFill" src="{{product.image}}" bindtap="previewImage"></image>
+    <view class="product-main">
+      <view class="price-row">
+        <text class="price">¥{{product.priceText}}</text>
+        <text class="stock">{{product.stockText}}</text>
+      </view>
+      <view class="title">{{product.title}}</view>
+      <view class="category">{{product.category}}</view>
+    </view>
+    <view class="detail-block">
+      <view class="block-title">商品说明</view>
+      <view class="desc">{{product.desc || '代售点现货商品，具体包装以实际送达为准。'}}</view>
+    </view>
+    <view class="service-block">
+      <view class="service-item"><text class="dot"></text>代售点现货</view>
+      <view class="service-item"><text class="dot"></text>送到宿舍门口</view>
+    </view>
+    <view class="bottom-bar">
+      <button class="cart-entry" bindtap="goCart">购物车<text wx:if="{{cartCount}}" class="cart-count">{{cartCount}}</text></button>
+      <button class="primary-btn buy-btn" disabled="{{product.stock === 0}}" bindtap="addToCart">{{product.stock === 0 ? '暂时售罄' : '加入购物车'}}</button>
+    </view>
+  </view>
+  <view wx:elif="{{loading}}" class="empty">正在加载商品...</view>
+  <view wx:else class="empty">商品不存在或已下架</view>
+</view>

@@ -1,20 +1,33 @@
 const { callCloud, requireLogin } = require("../../utils/cloud");
 
+const POST_CATEGORIES = ["校园动态", "求助问答", "拼单搭子", "失物招领", "新生指南", "吐槽闲聊"];
+
 Page({
   data: {
     title: "",
     content: "",
+    category: "校园动态",
+    categories: POST_CATEGORIES,
     images: [],
     submitting: false,
   },
 
-  onLoad() {
+  onLoad(options = {}) {
     requireLogin();
+    const category = decodeURIComponent(options.category || "");
+    if (POST_CATEGORIES.includes(category)) {
+      this.setData({ category });
+    }
   },
 
   onInput(e) {
     const field = e.currentTarget.dataset.field;
     this.setData({ [field]: e.detail.value });
+  },
+
+  selectCategory(e) {
+    const category = e.currentTarget.dataset.category;
+    if (POST_CATEGORIES.includes(category)) this.setData({ category });
   },
 
   chooseImages() {
@@ -70,6 +83,7 @@ Page({
           type: "add",
           title: this.data.title.trim(),
           content: this.data.content.trim(),
+          category: this.data.category,
           images,
         },
         { silent: true }

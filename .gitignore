@@ -21,3 +21,11 @@ yarn-error.log*
 Thumbs.db
 .vscode/
 .idea/
+
+# Local agent notes and intermediate image extraction
+.learnings/
+avatars_extracted/
+
+# Private key material
+*.pem
+*.key

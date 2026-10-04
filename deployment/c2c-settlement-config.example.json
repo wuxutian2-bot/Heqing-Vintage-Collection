@@ -1,0 +1,9 @@
+{
+  "_id": "settlement",
+  "checkoutEnabled": false,
+  "payoutEnabled": false,
+  "feeRuleVersion": "fee-disabled-v1",
+  "feeRateBps": 0,
+  "minFeeFen": 0,
+  "maxFeeFen": 0
+}

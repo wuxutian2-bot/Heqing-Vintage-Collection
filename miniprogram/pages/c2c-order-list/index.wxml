@@ -1,0 +1,25 @@
+<view class="orders-page">
+  <view class="hero">
+    <view class="hero-kicker">CAMPUS SAFE TRADE</view>
+    <view class="hero-title">我的担保交易</view>
+    <view class="hero-copy">线下当面交付；付款、确认收货与争议状态均由订单记录。</view>
+  </view>
+
+  <view wx:if="{{orders.length}}" class="order-list">
+    <view wx:for="{{orders}}" wx:key="_id" class="order-card" data-id="{{item._id}}" bindtap="goDetail">
+      <view class="order-top"><text class="role-chip">{{item.roleText}}</text><text class="status">{{item.statusText}}</text></view>
+      <view class="goods-row">
+        <image class="cover" mode="aspectFill" src="{{item.cover}}"></image>
+        <view class="goods-main"><view class="goods-title">{{item.title}}</view><view class="created">{{item.createdText}}</view></view>
+        <view class="amount">¥{{item.amountText}}</view>
+      </view>
+      <view class="order-foot"><text>资金状态以服务端支付及订单记录为准</text><text>查看详情 ›</text></view>
+    </view>
+  </view>
+
+  <view wx:if="{{loading && !orders.length}}" class="empty">正在加载交易订单...</view>
+  <view wx:elif="{{!loading && !orders.length}}" class="empty">
+    <view class="empty-mark">交</view><view class="empty-title">还没有担保交易</view><view class="empty-copy">在商品详情页可查看是否已开放担保购买。</view>
+    <button class="market-btn" bindtap="goMarket">去市场看看</button>
+  </view>
+</view>

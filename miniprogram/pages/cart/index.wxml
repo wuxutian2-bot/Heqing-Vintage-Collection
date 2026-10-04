@@ -1,0 +1,47 @@
+<view class="cart-page">
+  <view wx:if="{{cart.items.length}}" class="cart-content">
+    <view class="cart-head">
+      <view>
+        <view class="page-title">购物车</view>
+        <view class="muted">每笔订单仅配送一个代售点的商品</view>
+      </view>
+      <button class="clear-btn" bindtap="clearCart">清空</button>
+    </view>
+
+    <view class="cart-list">
+      <view wx:for="{{cart.items}}" wx:key="productId" class="cart-item">
+        <image class="item-image" mode="aspectFill" src="{{item.image}}"></image>
+        <view class="item-main">
+          <view class="item-title">{{item.title}}</view>
+          <view class="item-price">¥{{item.priceText}}</view>
+          <view class="item-bottom">
+            <view class="quantity">
+              <button class="quantity-btn" data-id="{{item.productId}}" data-delta="-1" bindtap="changeQuantity">−</button>
+              <text>{{item.quantity}}</text>
+              <button class="quantity-btn" disabled="{{item.quantity >= item.stock}}" data-id="{{item.productId}}" data-delta="1" bindtap="changeQuantity">＋</button>
+            </view>
+            <button class="remove-btn" data-id="{{item.productId}}" bindtap="removeItem">移除</button>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="cart-bar">
+      <view class="cart-summary">
+        <view class="muted">商品小计</view>
+        <view class="total-price">¥{{subtotalText}}</view>
+      </view>
+      <view class="cart-actions">
+        <button class="primary-btn checkout-btn" disabled="{{!paymentReady}}" bindtap="goCheckout">{{paymentReady ? '去结算' : '支付配置中'}}</button>
+        <view class="coupon-reserve"></view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:else class="empty-cart">
+    <view class="empty-mark">购</view>
+    <view class="empty-title">购物车还是空的</view>
+    <view class="muted">去当前宿舍楼的代售点挑选商品</view>
+    <button class="primary-btn browse-btn" bindtap="goStore">去逛逛</button>
+  </view>
+</view>
